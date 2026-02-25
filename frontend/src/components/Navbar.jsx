@@ -206,8 +206,12 @@ const Navbar = () => {
 
       {/* ══════════════════════════════════════════
           MOBILE — fixed bottom navigation bar
+          (raised slightly for phone safe-area)
       ══════════════════════════════════════════ */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.12)]" style={{ height: 68 }}>
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.12)] pb-1"
+        style={{ height: 68, paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
         <div
           className="h-full grid"
           style={{ gridTemplateColumns: `repeat(${mobileLinks.length}, 1fr)` }}
