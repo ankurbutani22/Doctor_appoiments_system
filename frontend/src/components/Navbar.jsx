@@ -136,8 +136,8 @@ const Navbar = () => {
       {/* ══════════════════════════════════════════
           MOBILE — fixed top bar
       ══════════════════════════════════════════ */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm flex items-center justify-between px-4 h-14">
-        <img onClick={() => navigate('/')} className="w-28 cursor-pointer" src={assets.logo} alt="Logo" />
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-md flex items-center justify-between px-4 h-16">
+        <img onClick={() => navigate('/')} className="w-32 cursor-pointer" src={assets.logo} alt="Logo" />
         <div className="flex items-center gap-2">
           {(token && userData) && (
             <span className="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-orange-500 px-2.5 py-1 rounded-full text-white text-xs font-bold">
@@ -163,7 +163,7 @@ const Navbar = () => {
       {profileSheet && (
         <div className="md:hidden fixed inset-0 z-[60] bg-black/50" onClick={() => setProfileSheet(false)}>
           <div
-            className="fixed bottom-[64px] left-3 right-3 bg-white rounded-3xl shadow-2xl overflow-hidden animate-slide-up"
+            className="fixed bottom-[72px] left-3 right-3 bg-white rounded-3xl shadow-2xl overflow-hidden animate-slide-up"
             onClick={e => e.stopPropagation()}
           >
             {/* Header */}
@@ -207,7 +207,7 @@ const Navbar = () => {
       {/* ══════════════════════════════════════════
           MOBILE — fixed bottom navigation bar
       ══════════════════════════════════════════ */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-2px_16px_rgba(0,0,0,0.08)]" style={{ height: 64 }}>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.12)]" style={{ height: 68 }}>
         <div
           className="h-full grid"
           style={{ gridTemplateColumns: `repeat(${mobileLinks.length}, 1fr)` }}
@@ -218,15 +218,15 @@ const Navbar = () => {
               <NavLink
                 key={link.to}
                 to={link.to}
-                className="flex flex-col items-center justify-center gap-0.5 relative"
+                className="flex flex-col items-center justify-center gap-1 relative"
               >
                 {active && (
-                  <span className="absolute top-0 inset-x-4 h-[3px] bg-primary rounded-b-full" />
+                  <span className="absolute top-0 inset-x-4 h-1 bg-primary rounded-b-full" />
                 )}
-                <span className={`text-[22px] leading-none transition-transform duration-200 ${active ? 'scale-110' : 'scale-100'}`}>
+                <span className={`text-[24px] leading-none transition-transform duration-200 ${active ? 'scale-110' : 'scale-100'}`}>
                   {link.icon}
                 </span>
-                <span className={`text-[10px] font-semibold tracking-tight ${active ? 'text-primary' : 'text-gray-400'}`}>
+                <span className={`text-[11px] font-semibold tracking-tight ${active ? 'text-primary' : 'text-gray-500'}`}>
                   {link.label}
                 </span>
               </NavLink>

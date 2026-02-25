@@ -21,7 +21,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
   return (
-    <div className="mx-4 sm:mx-[10%] pt-14 md:pt-0 pb-16 md:pb-0">
+    <div className="mx-4 sm:mx-[10%] pt-16 md:pt-0 pb-[72px] md:pb-0">
       <ToastContainer />
       <Navbar />
       <ErrorBoundary>
