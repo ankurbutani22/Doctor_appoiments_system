@@ -43,7 +43,10 @@ const Sidebare = () => {
 
         {/* Mobile bottom navigation */}
         {aToken && (
-            <nav className='md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]' style={{ height: 64 }}>
+            <nav
+              className='md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-1'
+              style={{ height: 68, paddingBottom: 'env(safe-area-inset-bottom)' }}
+            >
                 <div className='h-full grid grid-cols-5 text-[11px] font-medium text-gray-600'>
                     <NavLink to="/admin-dashboard" className={({ isActive }) => `flex flex-col items-center justify-center gap-1 ${isActive ? 'text-primary' : ''}`}>
                         <img src={assets.home_icon} alt='' className='w-5 h-5' />
