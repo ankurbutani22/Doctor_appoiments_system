@@ -11,11 +11,12 @@ const PatientsList = () => {
   }, [aToken])
 
   return (
-    <div className='m-5 max-h-[90vh] overflow-auto'>
+    <div className='m-5 max-h-[90vh] overflow-y-auto'>
       <h1 className='text-lg font-medium mb-4'>Patients List</h1>
 
-      <div className='bg-white rounded-xl shadow-sm border border-indigo-100 overflow-hidden'>
-        <table className='w-full text-sm'>
+      {/* Wrapper with horizontal scroll for small mobile screens */}
+      <div className='bg-white rounded-xl shadow-sm border border-indigo-100 overflow-x-auto'>
+        <table className='w-full min-w-[640px] text-xs sm:text-sm'>
           <thead className='bg-indigo-50 text-left text-gray-700'>
             <tr>
               <th className='py-3 px-4'>#</th>
