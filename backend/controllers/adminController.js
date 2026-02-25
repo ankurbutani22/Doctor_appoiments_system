@@ -105,12 +105,23 @@ const loginAdmin = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
-// Api to get all doctors list for admin panal
+// Api to get all doctors list for admin panel
 const allDoctors = async (req, res) => {
     try {
         console.log("Hit all-doctors API"); // Log to verify connection
         const doctors = await doctorModel.find({}).select('-password')
         res.json({ success: true, doctors })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// Api to get all patients list for admin panel
+const allPatients = async (req, res) => {
+    try {
+        const users = await userModel.find({}).select('-password')
+        res.json({ success: true, patients: users })
     } catch (error) {
         console.log(error)
         res.json({ success: false, message: error.message })
@@ -224,4 +235,4 @@ const updateDoctor = async (req, res) => {
     }
 }
 
-export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, adminDashboard, appointmentCancel, getDoctorById, updateDoctor }
+export { addDoctor, loginAdmin, allDoctors, allPatients, appointmentsAdmin, adminDashboard, appointmentCancel, getDoctorById, updateDoctor }
