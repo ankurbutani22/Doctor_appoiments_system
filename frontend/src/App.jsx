@@ -1,5 +1,5 @@
-import React from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import Home from './pages/home'
 import About from './pages/About'
 import Login from './pages/Login'
@@ -19,10 +19,23 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+// Scroll to top on every route change so new pages
+// always start from the header instead of near footer.
+const ScrollToTop = () => {
+  const location = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [location.pathname])
+
+  return null
+}
+
 const App = () => {
   return (
     <div className="mx-4 sm:mx-[10%] pt-16 md:pt-0 pb-[72px] md:pb-0">
       <ToastContainer />
+      <ScrollToTop />
       <Navbar />
       <ErrorBoundary>
         <Routes>

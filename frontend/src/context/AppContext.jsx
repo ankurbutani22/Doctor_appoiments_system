@@ -8,7 +8,9 @@ const AppContextprovider = (props) => {
     const currencysymbol = "₹"
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors, setDoctors] = useState([])
-    const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : false)
+    // Do not restore user token from localStorage so that
+    // every fresh open of the site requires a new login.
+    const [token, setToken] = useState(false)
     const [userData, setUserData] = useState(false)
 
     const getDoctorsData = async () => {

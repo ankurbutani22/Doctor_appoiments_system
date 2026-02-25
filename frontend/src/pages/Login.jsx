@@ -23,15 +23,16 @@ const Login = () => {
         if (state === 'Sign Up') {
           const { data } = await axios.post(backendUrl + '/api/user/register', { name, password, email })
           if (data.success) {
-            localStorage.setItem('token', data.token)
-            setToken(data.token)
+            // Registration successful – do NOT auto login.
+            // Ask user to login manually.
+            toast.success('Registration successful, please login.')
+            setState('Login')
           } else {
             toast.error(data.message)
           }
         } else {
           const { data } = await axios.post(backendUrl + '/api/user/login', { password, email })
           if (data.success) {
-            localStorage.setItem('token', data.token)
             setToken(data.token)
           } else {
             toast.error(data.message)
