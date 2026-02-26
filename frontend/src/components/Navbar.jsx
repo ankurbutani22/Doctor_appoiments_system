@@ -148,6 +148,14 @@ const Navbar = () => {
               🪙 {userCoins}
             </span>
           )}
+            {token && !dToken && (
+              <button
+                onClick={() => navigate('/my-appointments')}
+                className="text-xs font-semibold text-primary border border-primary px-2.5 py-1 rounded-full mr-1"
+              >
+                📅 Appointments
+              </button>
+            )}
           {(token && userData) || dToken ? (
             <img
               onClick={() => setProfileSheet(true)}
