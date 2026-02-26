@@ -40,7 +40,10 @@ const Navbar = () => {
     : [
       { to: '/', label: 'HOME' },
       { to: '/doctors', label: 'ALL DOCTORS' },
-      ...(token ? [{ to: '/my-medicines', label: 'MEDICINES' }] : []),
+      ...(token ? [
+        { to: '/my-appointments', label: 'APPOINTMENTS' },
+        { to: '/my-medicines', label: 'MEDICINES' },
+      ] : []),
       { to: '/about', label: 'ABOUT' },
       { to: '/Contect', label: 'CONTACT' },
     ]
@@ -56,6 +59,7 @@ const Navbar = () => {
       ? [
         { to: '/', label: 'Home', icon: '🏠' },
         { to: '/doctors', label: 'Doctors', icon: '🩺' },
+        { to: '/my-appointments', label: 'Appointments', icon: '📅' },
         { to: '/my-medicines', label: 'Medicines', icon: '💊' },
         { to: '/my-profile', label: 'Profile', icon: '👤' },
       ]
@@ -105,7 +109,7 @@ const Navbar = () => {
                   </div>
                   <div className="p-2 flex flex-col text-sm text-gray-600">
                     <p onClick={() => navigate('my-profile')} className="hover:bg-blue-50 hover:text-blue-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">👤 My Profile</p>
-                    <p onClick={() => navigate('My-Appointments')} className="hover:bg-blue-50 hover:text-blue-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">📅 My Appointments</p>
+                    <p onClick={() => navigate('/my-appointments')} className="hover:bg-blue-50 hover:text-blue-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">📅 My Appointments</p>
                     <hr className="my-1 border-gray-100" />
                     <p onClick={logout} className="hover:bg-red-50 hover:text-red-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">🚪 Logout</p>
                   </div>
@@ -186,7 +190,7 @@ const Navbar = () => {
                   <button onClick={() => { navigate('my-profile'); setProfileSheet(false) }} className="w-full text-left py-3 px-4 bg-gray-50 rounded-2xl flex items-center gap-3 font-medium text-gray-700">
                     <span className="text-xl">👤</span> My Profile
                   </button>
-                  <button onClick={() => { navigate('My-Appointments'); setProfileSheet(false) }} className="w-full text-left py-3 px-4 bg-gray-50 rounded-2xl flex items-center gap-3 font-medium text-gray-700">
+                  <button onClick={() => { navigate('/my-appointments'); setProfileSheet(false) }} className="w-full text-left py-3 px-4 bg-gray-50 rounded-2xl flex items-center gap-3 font-medium text-gray-700">
                     <span className="text-xl">📅</span> My Appointments
                   </button>
                 </>
