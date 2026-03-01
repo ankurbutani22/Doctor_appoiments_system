@@ -34,7 +34,7 @@ const Sidebare = () => {
                 </NavLink>
 
                 <NavLink to="/patients" className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:main-w-72 cursor-pointer ${isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''}`}>
-                    <img src={assets.patients_icon} alt="" />
+                    <img src={assets.patient_icon} alt="" />
                     <p>Patients List</p>
                 </NavLink>
             </ul>

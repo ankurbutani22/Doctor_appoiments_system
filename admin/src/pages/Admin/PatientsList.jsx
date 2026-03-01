@@ -22,7 +22,7 @@ const PatientsList = () => {
             className='flex items-center gap-4 bg-white border border-indigo-100 rounded-2xl px-4 py-3 shadow-sm w-full sm:w-[48%] lg:max-w-md'
           >
             <div className='w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center flex-shrink-0'>
-              <img src={assets.patients_icon} alt='' className='w-7 h-7' />
+              <img src={assets.patient_icon} alt='' className='w-7 h-7' />
             </div>
             <div className='flex-1 min-w-0'>
               <p className='text-sm font-semibold text-gray-800 truncate'>
