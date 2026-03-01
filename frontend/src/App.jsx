@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import Home from './pages/home'
 import About from './pages/About'
@@ -16,6 +16,7 @@ import DoctorMedicines from './pages/DoctorMedicines'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
+import DoctorLoader from './components/DoctorLoader'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -32,6 +33,20 @@ const ScrollToTop = () => {
 }
 
 const App = () => {
+  const [showLoader, setShowLoader] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(false)
+    }, 1500) // 1.5 seconds splash
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (showLoader) {
+    return <DoctorLoader />
+  }
+
   return (
     <div className="mx-4 sm:mx-[10%] pt-16 md:pt-0 pb-[72px] md:pb-0">
       <ToastContainer />
