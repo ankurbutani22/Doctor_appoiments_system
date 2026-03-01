@@ -29,7 +29,7 @@ const PrescriptionModal = ({ appointmentId, patientName, initialMedicines = '', 
                     </button>
                     <button
                         onClick={() => onComplete(appointmentId, medicines)}
-                        className='flex-1 bg-primary text-white py-2.5 rounded-lg hover:bg-primary-dark transition-all font-medium shadow-lg active:scale-95'
+                        className='flex-1 bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition-all font-medium shadow-lg active:scale-95'
                     >
                         Complete & Prescribe
                     </button>
