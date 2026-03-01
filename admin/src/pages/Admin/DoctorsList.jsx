@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import { AdminContext } from '../../context/AdminContext'
 import { useNavigate } from 'react-router-dom'
+import PageLoader from '../../components/PageLoader'
 
 const DoctorsList = () => {
   // Get doctors data and the fetch function from context
-  const { doctors, aToken, getAllDoctors ,changeAvailablity} = useContext(AdminContext)
+  const { doctors, aToken, getAllDoctors ,changeAvailablity, loadingDoctors} = useContext(AdminContext)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -12,6 +13,10 @@ const DoctorsList = () => {
       getAllDoctors() // Fetches the data seen in your console
     }
   }, [aToken])
+
+  if (loadingDoctors && doctors.length === 0) {
+    return <PageLoader label="Loading doctors..." />
+  }
 
   return (
     <div className=' m-5 max-h-[90vh] overflow-scroll '>

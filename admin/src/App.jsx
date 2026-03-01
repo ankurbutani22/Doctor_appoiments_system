@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Login from './pages/Login'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -12,9 +12,11 @@ import AddDoctor from './pages/Admin/AddDoctor'
 import EditDoctor from './pages/Admin/EditDoctor'
 import DoctorsList from './pages/Admin/DoctorsList'
 import PatientsList from './pages/Admin/PatientsList'
+import AdminLoader from './components/AdminLoader'
 
 const App = () => {
   const { aToken, setAToken } = useContext(AdminContext)
+  const [showLoader, setShowLoader] = useState(true)
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -28,7 +30,38 @@ const App = () => {
     }
   }, [setAToken])
 
-  return aToken ? (
+  useEffect(() => {
+    if (!aToken) {
+      setShowLoader(false)
+      return
+    }
+
+    const timer = setTimeout(() => {
+      setShowLoader(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [aToken])
+
+  if (!aToken) {
+    return (
+      <>
+        <Login />
+        <ToastContainer />
+      </>
+    )
+  }
+
+  if (showLoader) {
+    return (
+      <div className='bg-[#F8F9FD]'>
+        <ToastContainer />
+        <AdminLoader />
+      </div>
+    )
+  }
+
+  return (
     <div className='bg-[#F8F9FD]'>
       <ToastContainer />
       <Navebar />
@@ -46,11 +79,6 @@ const App = () => {
         </Routes>
       </div>
     </div>
-  ) : (
-    <>
-      <Login />
-      <ToastContainer />
-    </>
   )
 }
 

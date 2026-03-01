@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import { AdminContext } from '../../context/AdminContext'
 import { assets } from '../../assets/assets'
+import PageLoader from '../../components/PageLoader'
 
 const AllAppoinments = () => {
 
-  const { aToken, appointments, getAllAppointments } = useContext(AdminContext)
+  const { aToken, appointments, getAllAppointments, loadingAppointments } = useContext(AdminContext)
 
   useEffect(() => {
     if (aToken) {
@@ -18,6 +19,10 @@ const AllAppoinments = () => {
 
     let age = today.getFullYear() - birthDate.getFullYear()
     return isNaN(age) ? 'NA' : age
+  }
+
+  if (loadingAppointments && appointments.length === 0) {
+    return <PageLoader label="Loading appointments..." />
   }
 
   return (

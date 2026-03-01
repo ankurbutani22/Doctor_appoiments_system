@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import PageLoader from '../components/PageLoader'
 
 const MyMedicines = () => {
     const { backendUrl, token, currencysymbol } = useContext(AppContext)
     const [appointments, setAppointments] = useState([])
+    const [isLoadingAppointments, setIsLoadingAppointments] = useState(false)
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -16,6 +18,7 @@ const MyMedicines = () => {
 
     const getuserAppointments = async () => {
         try {
+            setIsLoadingAppointments(true)
             const { data } = await axios.get(backendUrl + '/api/user/appointments', { headers: { token } })
             if (data.success) {
                 const completedList = data.appointments.filter(item => item.isCompleted)
@@ -24,6 +27,8 @@ const MyMedicines = () => {
         } catch (error) {
             console.log(error)
             toast.error(error.message)
+        } finally {
+            setIsLoadingAppointments(false)
         }
     }
 
@@ -40,7 +45,9 @@ const MyMedicines = () => {
             </p>
 
             <div className='grid grid-cols-1 gap-8 mt-10'>
-                {appointments.length > 0 ? (
+                {isLoadingAppointments && appointments.length === 0 ? (
+                    <PageLoader label="Loading your medicines..." />
+                ) : appointments.length > 0 ? (
                     appointments.map((item, index) => (
                         <div key={index} className='bg-white border rounded-lg shadow-lg overflow-hidden max-w-4xl mx-auto w-full'>
                             {/* Bill Header */}

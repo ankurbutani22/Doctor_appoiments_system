@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import PageLoader from '../components/PageLoader'
 
 
 const MyAppointments = () => {
@@ -11,6 +12,7 @@ const MyAppointments = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null)
   const [userCoins, setUserCoins] = useState(1000)
   const [isProcessing, setIsProcessing] = useState(false)
+  const [isLoadingAppointments, setIsLoadingAppointments] = useState(false)
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   const slotDateFormatter = (slotDate) => {
@@ -19,6 +21,7 @@ const MyAppointments = () => {
   }
   const getuserAppointments = async () => {
     try {
+      setIsLoadingAppointments(true)
       // API કોલ બેકએન્ડ રૂટ મુજબ બરાબર છે
       const { data } = await axios.get(backendUrl + '/api/user/appointments', { headers: { token } })
 
@@ -33,6 +36,8 @@ const MyAppointments = () => {
       } else {
         toast.error(error.message)
       }
+    } finally {
+      setIsLoadingAppointments(false)
     }
   }
 
@@ -154,6 +159,9 @@ const MyAppointments = () => {
   return (
     <div>
       <p className='pb-3 mt-12 font-medium text-zinc-700 border-b'>My appointments</p>
+      {isLoadingAppointments && appointments.length === 0 ? (
+        <PageLoader label="Loading your appointments..." />
+      ) : (
       <div>
         {appointments.map((item, index) => (
           <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b' key={index}>
@@ -182,6 +190,7 @@ const MyAppointments = () => {
           </div>
         ))}
       </div>
+      )}
 
       {/* Fake Payment Modal */}
       {showPaymentModal && selectedAppointment && (

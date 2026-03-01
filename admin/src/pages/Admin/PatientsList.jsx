@@ -1,15 +1,20 @@
 import React, { useContext, useEffect } from 'react'
 import { AdminContext } from '../../context/AdminContext'
 import { assets } from '../../assets/assets'
+import PageLoader from '../../components/PageLoader'
 
 const PatientsList = () => {
-  const { aToken, patients, getAllPatients } = useContext(AdminContext)
+  const { aToken, patients, getAllPatients, loadingPatients } = useContext(AdminContext)
 
   useEffect(() => {
     if (aToken) {
       getAllPatients()
     }
   }, [aToken])
+
+  if (loadingPatients && patients.length === 0) {
+    return <PageLoader label="Loading patients..." />
+  }
 
   return (
     <div className='m-5 max-h-[90vh] overflow-y-auto'>

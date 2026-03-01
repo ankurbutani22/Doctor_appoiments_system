@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { AppContext } from '../context/AppContext';
+import PageLoader from '../components/PageLoader';
 
 const Doctors = () => {
   const { speciality } = useParams();
   const [filteredDoc, setFilteredDoc] = useState([])
   const [showFilter ,setShowFilter] = useState(false)
-  const { doctors } = useContext(AppContext)
+  const { doctors, loadingDoctors } = useContext(AppContext)
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   const applyFilter = () => {
@@ -23,6 +24,10 @@ const Doctors = () => {
     applyFilter();
   }, [speciality, doctors]);
   
+
+  if (loadingDoctors && doctors.length === 0) {
+    return <PageLoader label="Loading doctors..." />
+  }
 
   return (
     <div>

@@ -12,9 +12,13 @@ const DoctorContextProvider = (props) => {
     const [appointments, setAppointments] = useState([])
     const [dashData, setDashData] = useState(false)
     const [profileData, setProfileData] = useState(false)
+    const [loadingAppointments, setLoadingAppointments] = useState(false)
+    const [loadingDashData, setLoadingDashData] = useState(false)
+    const [loadingProfile, setLoadingProfile] = useState(false)
 
     const getAppointments = async () => {
         try {
+            setLoadingAppointments(true)
             const { data } = await axios.get(backendUrl + '/api/doctor/appointments', { headers: { dToken } })
             if (data.success) {
                 setAppointments(data.appointments)
@@ -25,11 +29,14 @@ const DoctorContextProvider = (props) => {
         } catch (error) {
             console.log(error)
             toast.error(error.message)
+        } finally {
+            setLoadingAppointments(false)
         }
     }
 
     const getDashData = async () => {
         try {
+            setLoadingDashData(true)
             const { data } = await axios.get(backendUrl + '/api/doctor/dashboard', { headers: { dToken } })
             if (data.success) {
                 setDashData(data.dashData)
@@ -40,11 +47,14 @@ const DoctorContextProvider = (props) => {
         } catch (error) {
             console.log(error)
             toast.error(error.message)
+        } finally {
+            setLoadingDashData(false)
         }
     }
 
     const getProfileData = async () => {
         try {
+            setLoadingProfile(true)
             const { data } = await axios.get(backendUrl + '/api/doctor/profile', { headers: { dToken } })
             if (data.success) {
                 setProfileData(data.profileData)
@@ -55,6 +65,8 @@ const DoctorContextProvider = (props) => {
         } catch (error) {
             console.log(error)
             toast.error(error.message)
+        } finally {
+            setLoadingProfile(false)
         }
     }
 
@@ -109,8 +121,11 @@ const DoctorContextProvider = (props) => {
         backendUrl,
         appointments, setAppointments,
         getAppointments,
+        loadingAppointments,
         dashData, setDashData, getDashData,
+        loadingDashData,
         profileData, setProfileData, getProfileData,
+        loadingProfile,
         completeAppointment, cancelAppointment, prescribeMedicines
     }
 

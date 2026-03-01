@@ -9,10 +9,15 @@ const AdminContextProvider = (props) => {
     const [patients, setPatients] = useState([])
     const [appointments, setAppointments] = useState([])
     const [dashData, setDashData] = useState(false)
+    const [loadingDoctors, setLoadingDoctors] = useState(false)
+    const [loadingPatients, setLoadingPatients] = useState(false)
+    const [loadingAppointments, setLoadingAppointments] = useState(false)
+    const [loadingDashData, setLoadingDashData] = useState(false)
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
     const getAllDoctors = async () => {
         try {
+            setLoadingDoctors(true)
             const { data } = await axios.post(backendUrl + '/api/admin/all-doctors', {}, { headers: { atoken: aToken } })
             if (data.success) {
                 setdoctors(data.doctors)
@@ -23,12 +28,15 @@ const AdminContextProvider = (props) => {
         }
         catch (error) {
             toast.error(error.message)
+        } finally {
+            setLoadingDoctors(false)
         }
     }
 
 
     const getAllPatients = async () => {
         try {
+            setLoadingPatients(true)
             const { data } = await axios.get(backendUrl + '/api/admin/patients', { headers: { atoken: aToken } })
             if (data.success) {
                 setPatients(data.patients)
@@ -37,12 +45,15 @@ const AdminContextProvider = (props) => {
             }
         } catch (error) {
             toast.error(error.message)
+        } finally {
+            setLoadingPatients(false)
         }
     }
 
 
     const getAllAppointments = async () => {
         try {
+            setLoadingAppointments(true)
             const { data } = await axios.get(backendUrl + '/api/admin/appointments', { headers: { atoken: aToken } })
             if (data.success) {
                 setAppointments(data.appointments)
@@ -52,11 +63,14 @@ const AdminContextProvider = (props) => {
             }
         } catch (error) {
             toast.error(error.message)
+        } finally {
+            setLoadingAppointments(false)
         }
     }
 
     const getDashData = async () => {
         try {
+            setLoadingDashData(true)
             const { data } = await axios.get(backendUrl + '/api/admin/dashboard', { headers: { atoken: aToken } })
             if (data.success) {
                 setDashData(data.dashData)
@@ -66,6 +80,8 @@ const AdminContextProvider = (props) => {
             }
         } catch (error) {
             toast.error(error.message)
+        } finally {
+            setLoadingDashData(false)
         }
     }
 
@@ -123,12 +139,17 @@ const AdminContextProvider = (props) => {
 
     const value = {
         aToken, setAToken,
-        backendUrl, doctors,
+        backendUrl,
+        doctors,
+        loadingDoctors,
         patients,
+        loadingPatients,
         getAllDoctors, getAllPatients, changeAvailablity, getDoctorById, updateDoctor,
         appointments, setAppointments,
+        loadingAppointments,
         getAllAppointments,
         dashData, getDashData,
+        loadingDashData,
         cancelAppointment
     }
     return (

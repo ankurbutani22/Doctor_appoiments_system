@@ -3,10 +3,11 @@ import { DoctorContext } from '../context/DoctorContext'
 import { AppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
 import PrescriptionModal from '../components/PrescriptionModal'
+import PageLoader from '../components/PageLoader'
 
 const DoctorAppointments = () => {
 
-    const { dToken, appointments, getAppointments, completeAppointment, cancelAppointment } = useContext(DoctorContext)
+    const { dToken, appointments, getAppointments, completeAppointment, cancelAppointment, loadingAppointments } = useContext(DoctorContext)
     const { calculateAge, slotDateFormat, currencysymbol } = useContext(AppContext)
 
     const [showModal, setShowModal] = useState(false)
@@ -27,6 +28,10 @@ const DoctorAppointments = () => {
         completeAppointment(appointmentId, medicines)
         setShowModal(false)
         setSelectedAppointment(null)
+    }
+
+    if (loadingAppointments && appointments.length === 0) {
+        return <PageLoader label="Loading appointments..." />
     }
 
     return (

@@ -8,13 +8,16 @@ const AppContextprovider = (props) => {
     const currencysymbol = "₹"
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors, setDoctors] = useState([])
+    const [loadingDoctors, setLoadingDoctors] = useState(false)
     // Do not restore user token from localStorage so that
     // every fresh open of the site requires a new login.
     const [token, setToken] = useState(false)
     const [userData, setUserData] = useState(false)
+    const [loadingUserData, setLoadingUserData] = useState(false)
 
     const getDoctorsData = async () => {
         try {
+            setLoadingDoctors(true)
             const { data } = await axios.get(backendUrl + '/api/doctor/list');
             if (data.success) {
                 setDoctors(data.doctors);
@@ -25,12 +28,14 @@ const AppContextprovider = (props) => {
             console.log(error);
             toast.error(error.message);
         } finally {
+            setLoadingDoctors(false)
         }
     }
 
     // Only one definition of loadUserProfileData is kept here
     const loadUserProfileData = async () => {
         try {
+            setLoadingUserData(true)
             const { data } = await axios.get(backendUrl + '/api/user/get-profile', { headers: { token } })
 
             if (data.success) {
@@ -48,6 +53,8 @@ const AppContextprovider = (props) => {
         } catch (error) {
             console.log(error)
             toast.error(error.message)
+        } finally {
+            setLoadingUserData(false)
         }
     }
 
@@ -68,10 +75,12 @@ const AppContextprovider = (props) => {
 
     const value = {
         doctors, getDoctorsData,
+        loadingDoctors,
         currencysymbol,
         token, setToken,
         backendUrl,
         userData, setUserData,
+        loadingUserData,
         loadUserProfileData,
         calculateAge,
         slotDateFormat

@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { DoctorContext } from '../context/DoctorContext'
 import { assets } from '../assets/assets'
 import PrescriptionModal from '../components/PrescriptionModal'
+import PageLoader from '../components/PageLoader'
 
 const DoctorDashboard = () => {
 
-    const { dToken, dashData, getDashData, cancelAppointment, completeAppointment } = useContext(DoctorContext)
+    const { dToken, dashData, getDashData, cancelAppointment, completeAppointment, loadingDashData } = useContext(DoctorContext)
 
     const [showModal, setShowModal] = useState(false)
     const [selectedAppointment, setSelectedAppointment] = useState(null)
@@ -25,6 +26,10 @@ const DoctorDashboard = () => {
         completeAppointment(appointmentId, medicines)
         setShowModal(false)
         setSelectedAppointment(null)
+    }
+
+    if (loadingDashData && !dashData) {
+        return <PageLoader label="Loading dashboard..." />
     }
 
     return dashData && (

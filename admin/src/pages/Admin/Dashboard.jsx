@@ -1,16 +1,21 @@
 import React, { useContext, useEffect } from 'react'
 import { AdminContext } from '../../context/AdminContext'
 import { assets } from '../../assets/assets'
+import PageLoader from '../../components/PageLoader'
 
 const Dashboard = () => {
 
-  const { aToken, getDashData, cancelAppointment, dashData } = useContext(AdminContext)
+  const { aToken, getDashData, cancelAppointment, dashData, loadingDashData } = useContext(AdminContext)
 
   useEffect(() => {
     if (aToken) {
       getDashData()
     }
   }, [aToken])
+
+  if (loadingDashData && !dashData) {
+    return <PageLoader label="Loading dashboard..." />
+  }
 
   return dashData && (
     <div className='m-5'>

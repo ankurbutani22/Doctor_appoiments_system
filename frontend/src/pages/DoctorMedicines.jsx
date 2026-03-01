@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { DoctorContext } from '../context/DoctorContext'
 import { AppContext } from '../context/AppContext'
 import PrescriptionModal from '../components/PrescriptionModal'
+import PageLoader from '../components/PageLoader'
 
 const DoctorMedicines = () => {
-    const { dToken, appointments, getAppointments, prescribeMedicines } = useContext(DoctorContext)
+    const { dToken, appointments, getAppointments, prescribeMedicines, loadingAppointments } = useContext(DoctorContext)
     const { calculateAge, slotDateFormat } = useContext(AppContext)
 
     const [showModal, setShowModal] = useState(false)
@@ -33,6 +34,10 @@ const DoctorMedicines = () => {
         prescribeMedicines(appointmentId, medicines)
         setShowModal(false)
         setSelectedAppointment(null)
+    }
+
+    if (loadingAppointments && appointments.length === 0) {
+        return <PageLoader label="Loading completed appointments..." />
     }
 
     return (
