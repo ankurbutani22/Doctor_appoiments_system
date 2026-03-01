@@ -15,13 +15,25 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [image, setImage] = useState(null)
 
   const onSubmitHandler = async (event) => {
     event.preventDefault()
     try {
       if (role === 'Patient') {
         if (state === 'Sign Up') {
-          const { data } = await axios.post(backendUrl + '/api/user/register', { name, password, email })
+          if (!image) {
+            toast.error('Profile image is required')
+            return
+          }
+
+          const formData = new FormData()
+          formData.append('name', name)
+          formData.append('email', email)
+          formData.append('password', password)
+          formData.append('image', image)
+
+          const { data } = await axios.post(backendUrl + '/api/user/register', formData)
           if (data.success) {
             // Registration successful – do NOT auto login.
             // Ask user to login manually.
@@ -109,6 +121,19 @@ const Login = () => {
               type='text'
               onChange={(e) => setName(e.target.value)}
               value={name}
+              required
+            />
+          </div>
+        )}
+
+        {role === 'Patient' && state === "Sign Up" && (
+          <div className='w-full'>
+            <p className='font-medium text-zinc-600'>Profile Photo (required)</p>
+            <input
+              className='bg-white/80 border border-white/50 rounded w-full p-2 mt-1 outline-none focus:bg-white transition-all text-sm'
+              type='file'
+              accept='image/*'
+              onChange={(e) => setImage(e.target.files[0])}
               required
             />
           </div>

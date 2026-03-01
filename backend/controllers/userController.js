@@ -19,8 +19,14 @@ const razorpayInstance = new Razorpay({
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body
+        const imageFile = req.file
+
         if (!name || !password || !email) {
-            return res.json({ success: false, message: "missing Ditails" })
+            return res.json({ success: false, message: "Missing details" })
+        }
+
+        if (!imageFile) {
+            return res.json({ success: false, message: "Profile image is required" })
         }
 
         if (!validator.isEmail(email)) {
@@ -31,13 +37,19 @@ const registerUser = async (req, res) => {
             return res.json({ success: false, message: "Enter a strong password" })
 
         }
+
         // hashing user password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
+
+        // upload image to cloudinary
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' })
+
         const userData = {
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            image: imageUpload.secure_url
         }
         const newUser = new userModel(userData)
         const user = await newUser.save()

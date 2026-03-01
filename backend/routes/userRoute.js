@@ -5,7 +5,8 @@ import uplod from '../middlewares/multer.js'
 
 const userRouter = express.Router()
 
-userRouter.post('/register', registerUser)
+// User auth
+userRouter.post('/register', uplod.single('image'), registerUser)
 userRouter.post('/login', loginUser)
 
 userRouter.get('/get-profile', authUser, getProfile)
