@@ -112,7 +112,7 @@ const DoctorMedicines = () => {
                             <div className='text-center'>
                                 <button
                                     onClick={() => handlePrescribe(item)}
-                                    className={`text-white px-4 py-1.5 rounded-full text-xs font-medium shadow-sm transition-all active:scale-95 ${item.prescribedMedicines ? 'bg-blue-500 hover:bg-blue-600' : 'bg-blue-600 hover:opacity-90'}`}
+                                    className={`text-black px-4 py-1.5 rounded-full text-xs font-medium shadow-sm transition-all active:scale-95 ${item.prescribedMedicines ? 'bg-blue-500 hover:bg-blue-600' : 'bg-blue-600 hover:opacity-90'}`}
                                 >
                                     {item.prescribedMedicines ? '✏️ Edit Medicine' : '➕ Add Medicine'}
                                 </button>
