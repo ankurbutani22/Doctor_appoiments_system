@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import Home from './pages/home'
 import About from './pages/About'
@@ -19,6 +19,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import DoctorLoader from './components/DoctorLoader'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { AppContext } from './context/AppContext'
 
 // Scroll to top on every route change so new pages
 // always start from the header instead of near footer.
@@ -33,6 +34,7 @@ const ScrollToTop = () => {
 }
 
 const App = () => {
+  const { token } = useContext(AppContext)
   const [showLoader, setShowLoader] = useState(true)
 
   useEffect(() => {
