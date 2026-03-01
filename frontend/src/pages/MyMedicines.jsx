@@ -46,7 +46,7 @@ const MyMedicines = () => {
 
             <div className='grid grid-cols-1 gap-8 mt-10'>
                 {isLoadingAppointments && appointments.length === 0 ? (
-                    <PageLoader label="Loading your medicines..." />
+                    <PageLoader label="Loading your medicines..." variant="medicines" />
                 ) : appointments.length > 0 ? (
                     appointments.map((item, index) => (
                         <div key={index} className='bg-white border rounded-lg shadow-lg overflow-hidden max-w-4xl mx-auto w-full'>

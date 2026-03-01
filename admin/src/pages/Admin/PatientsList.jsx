@@ -13,7 +13,7 @@ const PatientsList = () => {
   }, [aToken])
 
   if (loadingPatients && patients.length === 0) {
-    return <PageLoader label="Loading patients..." />
+    return <PageLoader label="Loading patients..." variant="patients" />
   }
 
   return (

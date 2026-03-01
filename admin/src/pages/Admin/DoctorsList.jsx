@@ -15,7 +15,7 @@ const DoctorsList = () => {
   }, [aToken])
 
   if (loadingDoctors && doctors.length === 0) {
-    return <PageLoader label="Loading doctors..." />
+    return <PageLoader label="Loading doctors..." variant="doctors" />
   }
 
   return (

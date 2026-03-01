@@ -37,7 +37,7 @@ const DoctorMedicines = () => {
     }
 
     if (loadingAppointments && appointments.length === 0) {
-        return <PageLoader label="Loading completed appointments..." />
+        return <PageLoader label="Loading completed appointments..." variant="medicines" />
     }
 
     return (

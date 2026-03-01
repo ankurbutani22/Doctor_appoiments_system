@@ -160,7 +160,7 @@ const MyAppointments = () => {
     <div>
       <p className='pb-3 mt-12 font-medium text-zinc-700 border-b'>My appointments</p>
       {isLoadingAppointments && appointments.length === 0 ? (
-        <PageLoader label="Loading your appointments..." />
+        <PageLoader label="Loading your appointments..." variant="appointments" />
       ) : (
       <div>
         {appointments.map((item, index) => (

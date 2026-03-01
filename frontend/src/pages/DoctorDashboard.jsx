@@ -29,7 +29,7 @@ const DoctorDashboard = () => {
     }
 
     if (loadingDashData && !dashData) {
-        return <PageLoader label="Loading dashboard..." />
+        return <PageLoader label="Loading dashboard..." variant="dashboard" />
     }
 
     return dashData && (

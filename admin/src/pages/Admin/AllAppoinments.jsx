@@ -22,7 +22,7 @@ const AllAppoinments = () => {
   }
 
   if (loadingAppointments && appointments.length === 0) {
-    return <PageLoader label="Loading appointments..." />
+    return <PageLoader label="Loading appointments..." variant="appointments" />
   }
 
   return (
