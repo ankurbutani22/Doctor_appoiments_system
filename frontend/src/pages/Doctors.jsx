@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { AppContext } from '../context/AppContext';
-import DoctorLoader from '../components/DoctorLoader';
 
 const Doctors = () => {
   const { speciality } = useParams();
   const [filteredDoc, setFilteredDoc] = useState([])
   const [showFilter ,setShowFilter] = useState(false)
-  const { doctors, loadingDoctors } = useContext(AppContext)
+  const { doctors } = useContext(AppContext)
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   const applyFilter = () => {
@@ -38,13 +37,9 @@ const Doctors = () => {
           <p onClick={()=>speciality ==='Neurologist' ? navigate('/doctors'):navigate ('/doctors/Neurologist')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${speciality ==="Neurologist" ? "bg-indigo-100 text-black ":""} `}>Neurologist</p>
           <p onClick={()=> speciality ==='Gastroenterologist' ? navigate('/doctors'):navigate ('/doctors/Gastroenterologist')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${speciality ==="Gastroenterologist" ? "bg-indigo-100 text-black ":""} `}>Gastroenterologist</p>
         </div>
-        <div className="w-3/4 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {loadingDoctors && (
-            <div className="col-span-full">
-              <DoctorLoader />
-            </div>
-          )}
-          {!loadingDoctors && filteredDoc.map((item, index) => (
+        <div className="w-3/4 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Doctor list */}
+          {/* CORRECTION: Use the map() method on the array */}
+          {filteredDoc.map((item, index) => (
             <div
               onClick={() => navigate(`/appointment/${item._id}`)}
               className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2.5 transition-all duration-500 shadow-lg"
@@ -60,9 +55,8 @@ const Doctors = () => {
               </div>
             </div>
           ))}
-          {!loadingDoctors && filteredDoc.length === 0 && (
-            <p className="col-span-full text-center text-gray-500">No doctors found for this specialty.</p>
-          )}
+          {/* Optionally show a message if no doctors are found */}
+          {filteredDoc.length === 0 && <p className="col-span-full text-center text-gray-500">No doctors found for this specialty.</p>}
         </div>
       </div>
     </div>
