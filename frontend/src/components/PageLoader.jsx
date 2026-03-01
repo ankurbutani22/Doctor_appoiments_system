@@ -31,7 +31,7 @@ const PageLoader = ({ label = 'Loading...', variant = 'default' }) => {
   const config = variants[variant] || variants.default
 
   return (
-    <div className="flex flex-col items-center justify-center py-10">
+    <div className="w-full min-h-[60vh] flex flex-col items-center justify-center py-16">
       <div className={`h-10 w-10 border-4 rounded-full animate-spin ${config.ringClass}`} />
       <p className="mt-3 text-sm font-medium text-gray-600 flex items-center gap-2">
         <span>{config.icon}</span>
