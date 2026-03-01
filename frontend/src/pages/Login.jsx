@@ -127,12 +127,30 @@ const Login = () => {
         )}
 
         {role === 'Patient' && state === "Sign Up" && (
-          <div className='w-full'>
-            <p className='font-medium text-zinc-600'>Profile Photo (required)</p>
+          <div className='w-full flex flex-col items-center gap-2 mt-1'>
+            <p className='font-medium text-zinc-600 self-start'>Profile Photo (required)</p>
+            <label
+              htmlFor='patient-image'
+              className='w-24 h-24 rounded-full border-2 border-dashed border-blue-400 bg-white/80 flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50 transition-all text-xs text-blue-600'
+            >
+              {image ? (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt='Preview'
+                  className='w-full h-full rounded-full object-cover'
+                />
+              ) : (
+                <>
+                  <span className='text-xl mb-1'>📷</span>
+                  <span>Upload photo</span>
+                </>
+              )}
+            </label>
             <input
-              className='bg-white/80 border border-white/50 rounded w-full p-2 mt-1 outline-none focus:bg-white transition-all text-sm'
+              id='patient-image'
               type='file'
               accept='image/*'
+              className='hidden'
               onChange={(e) => setImage(e.target.files[0])}
               required
             />
