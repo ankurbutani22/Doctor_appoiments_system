@@ -8,6 +8,7 @@ const AppContextprovider = (props) => {
     const currencysymbol = "₹"
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors, setDoctors] = useState([])
+    const [loadingDoctors, setLoadingDoctors] = useState(true)
     // Do not restore user token from localStorage so that
     // every fresh open of the site requires a new login.
     const [token, setToken] = useState(false)
@@ -15,6 +16,7 @@ const AppContextprovider = (props) => {
 
     const getDoctorsData = async () => {
         try {
+            setLoadingDoctors(true)
             const { data } = await axios.get(backendUrl + '/api/doctor/list');
             if (data.success) {
                 setDoctors(data.doctors);
@@ -24,6 +26,8 @@ const AppContextprovider = (props) => {
         } catch (error) {
             console.log(error);
             toast.error(error.message);
+        } finally {
+            setLoadingDoctors(false)
         }
     }
 
@@ -67,6 +71,7 @@ const AppContextprovider = (props) => {
 
     const value = {
         doctors, getDoctorsData,
+        loadingDoctors,
         currencysymbol,
         token, setToken,
         backendUrl,
