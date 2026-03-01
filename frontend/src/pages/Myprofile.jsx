@@ -11,6 +11,12 @@ const Myprofile = () => {
 
   const updateUserProfileData = async () => {
     try {
+      // Require a real profile image before saving
+      if (!image && (!userData.image || userData.image.length > 500)) {
+        toast.error('Profile image is required.')
+        return
+      }
+
       const formData = new FormData()
       formData.append('name', userData.name)
       formData.append('phone', userData.phone)
