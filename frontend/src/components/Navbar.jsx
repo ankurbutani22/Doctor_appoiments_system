@@ -9,7 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { token, setToken, userData, backendUrl } = useContext(AppContext)
-  const { dToken, setDToken } = useContext(DoctorContext)
+  const { dToken, setDToken, profileData, getProfileData } = useContext(DoctorContext)
 
   const [profileSheet, setProfileSheet] = useState(false)
   const [userCoins, setUserCoins] = useState(0)
@@ -29,6 +29,14 @@ const Navbar = () => {
   }
 
   useEffect(() => { if (token) getUserCoins() }, [token])
+
+  // Load doctor profile data when a doctor is logged in so we can
+  // show the correct profile image in the navbar.
+  useEffect(() => {
+    if (dToken) {
+      getProfileData()
+    }
+  }, [dToken, getProfileData])
 
   /* ── nav link definitions ── */
   const desktopLinks = dToken
@@ -118,7 +126,11 @@ const Navbar = () => {
             </div>
           ) : dToken ? (
             <div className="relative group flex items-center gap-2 cursor-pointer">
-              <img className="w-10 h-10 rounded-full border-2 border-primary" src={assets.profile_pic} alt="" />
+              <img
+                className="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                src={profileData?.image || assets.profile_pic}
+                alt="Doctor profile"
+              />
               <img className="w-2.5" src={assets.dropdown_icon} alt="" />
               <div className="absolute right-0 top-full pt-4 z-50 hidden group-hover:block">
                 <div className="min-w-48 bg-white border rounded-xl shadow-2xl p-2 text-sm text-gray-600 flex flex-col gap-1">
@@ -160,7 +172,11 @@ const Navbar = () => {
             <img
               onClick={() => setProfileSheet(true)}
               className="w-9 h-9 rounded-full border-2 border-primary object-cover cursor-pointer"
-              src={dToken ? assets.profile_pic : ((userData?.image && userData.image.length > 500) ? assets.profile_pic : (userData?.image || assets.profile_pic))}
+              src={dToken
+                ? (profileData?.image || assets.profile_pic)
+                : ((userData?.image && userData.image.length > 500)
+                    ? assets.profile_pic
+                    : (userData?.image || assets.profile_pic))}
               alt="Profile"
             />
           ) : (
@@ -182,8 +198,12 @@ const Navbar = () => {
             <div className="bg-gradient-to-r from-primary to-blue-600 p-5 flex items-center gap-3">
               <img
                 className="w-14 h-14 rounded-full border-2 border-white object-cover"
-                src={dToken ? assets.profile_pic : ((userData?.image && userData.image.length > 500) ? assets.profile_pic : (userData?.image || assets.profile_pic))}
-                alt=""
+                src={dToken
+                  ? (profileData?.image || assets.profile_pic)
+                  : ((userData?.image && userData.image.length > 500)
+                      ? assets.profile_pic
+                      : (userData?.image || assets.profile_pic))}
+                alt="Profile"
               />
               <div>
                 <p className="font-bold text-white text-base">{dToken ? 'Doctor' : userData?.name}</p>
