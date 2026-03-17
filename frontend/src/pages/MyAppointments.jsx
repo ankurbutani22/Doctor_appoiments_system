@@ -197,7 +197,7 @@ const MyAppointments = () => {
         <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50' onClick={() => !isProcessing && setShowPaymentModal(false)}>
           <div className='bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 overflow-hidden' onClick={(e) => e.stopPropagation()}>
             {/* Header */}
-            <div className='bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6'>
+            <div className='bg-linear-to-r from-blue-500 to-blue-600 text-white p-6'>
               <h2 className='text-2xl font-bold mb-2'>💳 Secure Payment</h2>
               <p className='text-blue-100 text-sm'>Complete your appointment payment</p>
             </div>
@@ -264,7 +264,7 @@ const MyAppointments = () => {
                 <button
                   onClick={processPayment}
                   disabled={isProcessing || userCoins < selectedAppointment.amount}
-                  className='flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg'
+                  className='flex-1 px-4 py-3 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg'
                 >
                   {isProcessing ? (
                     <span className='flex items-center justify-center'>

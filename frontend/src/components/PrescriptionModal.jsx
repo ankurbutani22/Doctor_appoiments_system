@@ -53,13 +53,13 @@ const PrescriptionModal = ({ appointmentId, patientName, initialMedicines = '', 
                 <div className='px-6 pb-5 pt-3 flex flex-col sm:flex-row-reverse gap-2 sm:gap-3 bg-gray-50/80'>
                     <button
                         onClick={() => onComplete(appointmentId, medicines)}
-                        className='w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-blue-600 text-white py-2.5 px-4 rounded-2xl text-sm font-semibold shadow-md hover:bg-blue-700 active:scale-[0.98] transition-transform transition-colors'
+                        className='w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-blue-600 text-white py-2.5 px-4 rounded-2xl text-sm font-semibold shadow-md hover:bg-blue-700 active:scale-[0.98] transition-all'
                     >
                         <span>Complete &amp; Prescribe</span>
                     </button>
                     <button
                         onClick={onCancel}
-                        className='w-full sm:w-auto inline-flex justify-center items-center gap-2 border border-gray-300 bg-white py-2.5 px-4 rounded-2xl text-sm font-medium text-gray-700 hover:bg-gray-100 active:scale-[0.98] transition-transform transition-colors'
+                        className='w-full sm:w-auto inline-flex justify-center items-center gap-2 border border-gray-300 bg-white py-2.5 px-4 rounded-2xl text-sm font-medium text-gray-700 hover:bg-gray-100 active:scale-[0.98] transition-all'
                     >
                         Cancel
                     </button>
