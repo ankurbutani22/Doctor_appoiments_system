@@ -234,5 +234,25 @@ const updateDoctor = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+// API for admin to permanently remove a doctor and related data
+const removeDoctor = async (req, res) => {
+    try {
+        const { docId } = req.body
+        if (!docId) {
+            return res.json({ success: false, message: 'Doctor ID required' })
+        }
 
-export { addDoctor, loginAdmin, allDoctors, allPatients, appointmentsAdmin, adminDashboard, appointmentCancel, getDoctorById, updateDoctor }
+        // Remove doctor record
+        await doctorModel.findByIdAndDelete(docId)
+
+        // Remove all appointments of this doctor so their data is fully cleared
+        await appointmentModel.deleteMany({ docId })
+
+        res.json({ success: true, message: 'Doctor removed successfully' })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export { addDoctor, loginAdmin, allDoctors, allPatients, appointmentsAdmin, adminDashboard, appointmentCancel, getDoctorById, updateDoctor, removeDoctor }

@@ -115,6 +115,20 @@ const AdminContextProvider = (props) => {
         }
     }
 
+    const removeDoctor = async (docId) => {
+        try {
+            const { data } = await axios.post(backendUrl + '/api/admin/remove-doctor', { docId }, { headers: { atoken: aToken } })
+            if (data.success) {
+                toast.success(data.message)
+                getAllDoctors()
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
     // fetch single doctor by id
     const getDoctorById = async (docId) => {
         try {
@@ -144,7 +158,7 @@ const AdminContextProvider = (props) => {
         loadingDoctors,
         patients,
         loadingPatients,
-        getAllDoctors, getAllPatients, changeAvailablity, getDoctorById, updateDoctor,
+        getAllDoctors, getAllPatients, changeAvailablity, getDoctorById, updateDoctor, removeDoctor,
         appointments, setAppointments,
         loadingAppointments,
         getAllAppointments,

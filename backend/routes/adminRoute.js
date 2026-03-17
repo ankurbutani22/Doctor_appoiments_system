@@ -1,5 +1,5 @@
 import express from 'express'
-import { addDoctor, allDoctors, allPatients, loginAdmin, appointmentsAdmin, adminDashboard, appointmentCancel, getDoctorById, updateDoctor } from '../controllers/adminController.js'
+import { addDoctor, allDoctors, allPatients, loginAdmin, appointmentsAdmin, adminDashboard, appointmentCancel, getDoctorById, updateDoctor, removeDoctor } from '../controllers/adminController.js'
 import uplod from '../middlewares/multer.js'
 import authAdmin from '../middlewares/authAdmin.js'
 import { changeAvailablity } from '../controllers/doctorController.js'
@@ -17,6 +17,8 @@ adminRouter.get('/patients', authAdmin, allPatients)
 adminRouter.post('/get-doctor', authAdmin, getDoctorById)
 // update doctor details (image optional)
 adminRouter.post('/update-doctor', authAdmin, uplod.single('docImg'), updateDoctor)
+// remove doctor permanently
+adminRouter.post('/remove-doctor', authAdmin, removeDoctor)
 adminRouter.post('/cancel-appointment', authAdmin, appointmentCancel)
 
 
