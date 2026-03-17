@@ -102,7 +102,7 @@ const Navbar = () => {
           {token && userData ? (
             <div className="relative group">
               <div className="flex items-center gap-2 cursor-pointer">
-                <div className="flex items-center gap-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-1.5 rounded-full text-white font-bold text-sm shadow">
+                <div className="flex items-center gap-1.5 bg-linear-to-r from-yellow-400 to-orange-500 px-3 py-1.5 rounded-full text-white font-bold text-sm shadow">
                   🪙 {userCoins}
                 </div>
                 <img className="w-10 h-10 rounded-full border-2 border-primary object-cover"
@@ -156,7 +156,7 @@ const Navbar = () => {
         <img onClick={() => navigate('/')} className="w-32 cursor-pointer" src={assets.logo} alt="Logo" />
         <div className="flex items-center gap-2">
           {(token && userData) && (
-            <span className="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-orange-500 px-2.5 py-1 rounded-full text-white text-xs font-bold">
+            <span className="flex items-center gap-1 bg-linear-to-r from-yellow-400 to-orange-500 px-2.5 py-1 rounded-full text-white text-xs font-bold">
               🪙 {userCoins}
             </span>
           )}
@@ -189,13 +189,13 @@ const Navbar = () => {
 
       {/* ── Profile bottom sheet (mobile) ── */}
       {profileSheet && (
-        <div className="md:hidden fixed inset-0 z-[60] bg-black/50" onClick={() => setProfileSheet(false)}>
+        <div className="md:hidden fixed inset-0 z-60 bg-black/50" onClick={() => setProfileSheet(false)}>
           <div
             className="fixed bottom-[72px] left-3 right-3 bg-white rounded-3xl shadow-2xl overflow-hidden animate-slide-up"
             onClick={e => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-primary to-blue-600 p-5 flex items-center gap-3">
+            <div className="bg-linear-to-r from-primary to-blue-600 p-5 flex items-center gap-3">
               <img
                 className="w-14 h-14 rounded-full border-2 border-white object-cover"
                 src={dToken
