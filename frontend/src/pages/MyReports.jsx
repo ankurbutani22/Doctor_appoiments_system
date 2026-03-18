@@ -92,15 +92,16 @@ const MyReports = () => {
                 </p>
               </div>
 
-              {/* Report link (download) */}
+              {/* Report link (view via backend) */}
               <div className="w-full text-right text-xs">
                 <a
-                  href={item.reportUrl}
-                  download
+                  href={`${backendUrl}/api/user/report/${item._id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-end gap-1 text-emerald-600 hover:text-emerald-700"
                 >
-                  <span>Download Report (PDF)</span>
-                  <span>⬇</span>
+                  <span>View Report (PDF)</span>
+                  <span>↗</span>
                 </a>
               </div>
             </div>

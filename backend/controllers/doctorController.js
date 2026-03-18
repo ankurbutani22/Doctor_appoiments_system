@@ -2,7 +2,7 @@ import doctorModel from "../models/doctorModel.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import appointmentModel from "../models/appointmentModel.js"
-import { v2 as cloudinary } from 'cloudinary'
+import fs from 'fs'
 
 
 const changeAvailablity = async (req, res) => {
@@ -178,6 +178,7 @@ const appointmentCancel = async (req, res) => {
 }
 
 // API for uploading or updating an appointment report (PDF)
+// Store the PDF bytes directly on the appointment document instead of Cloudinary
 const uploadReport = async (req, res) => {
     try {
         const { appointmentId } = req.body
@@ -193,17 +194,17 @@ const uploadReport = async (req, res) => {
             return res.json({ success: false, message: 'Appointment not found' })
         }
 
-        // Upload PDF report as a raw file so Cloudinary treats it as a document
-        const uploadResult = await cloudinary.uploader.upload(file.path, {
-            resource_type: 'raw',
-            format: 'pdf',
-        })
+        const fileBuffer = fs.readFileSync(file.path)
 
         await appointmentModel.findByIdAndUpdate(appointmentId, {
-            reportUrl: uploadResult.secure_url
+            reportData: fileBuffer,
+            reportFilename: file.originalname || 'report.pdf',
+            reportMimeType: file.mimetype || 'application/pdf',
+            // reportUrl now just indicates presence
+            reportUrl: 'local'
         })
 
-        res.json({ success: true, message: 'Report uploaded successfully', reportUrl: uploadResult.secure_url })
+        res.json({ success: true, message: 'Report uploaded successfully' })
     } catch (error) {
         console.log(error)
         res.json({ success: false, message: error.message })
@@ -221,7 +222,12 @@ const deleteReport = async (req, res) => {
             return res.json({ success: false, message: 'Appointment not found' })
         }
 
-        await appointmentModel.findByIdAndUpdate(appointmentId, { reportUrl: '' })
+        await appointmentModel.findByIdAndUpdate(appointmentId, {
+            reportUrl: '',
+            reportData: undefined,
+            reportFilename: '',
+            reportMimeType: ''
+        })
 
         res.json({ success: true, message: 'Report removed successfully' })
     } catch (error) {
@@ -230,9 +236,34 @@ const deleteReport = async (req, res) => {
     }
 }
 
+// Doctor download report endpoint (for doctor panel)
+const downloadReportDoctor = async (req, res) => {
+    try {
+        const { appointmentId } = req.params
+        const { docId } = req.body
+
+        const appointment = await appointmentModel.findById(appointmentId)
+
+        if (!appointment || appointment.docId !== docId) {
+            return res.status(404).send('Report not found')
+        }
+
+        if (!appointment.reportData) {
+            return res.status(404).send('No report uploaded')
+        }
+
+        res.setHeader('Content-Type', appointment.reportMimeType || 'application/pdf')
+        res.setHeader('Content-Disposition', `inline; filename="${appointment.reportFilename || 'report.pdf'}"`)
+        res.send(appointment.reportData)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Failed to download report')
+    }
+}
+
 export {
     changeAvailablity, doctorList,
     loginDoctor, appointmentsDoctor, appointmentCancel, appointmentComplete,
     doctorDashboard, doctorProfile, updateDoctorProfile, prescribeMedicines,
-    uploadReport, deleteReport
+    uploadReport, deleteReport, downloadReportDoctor
 }

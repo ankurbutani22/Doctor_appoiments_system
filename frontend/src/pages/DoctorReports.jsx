@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import PageLoader from '../components/PageLoader'
 
 const DoctorReports = () => {
-  const { dToken, appointments, getAppointments, loadingAppointments, uploadReport, deleteReport } = useContext(DoctorContext)
+  const { dToken, appointments, getAppointments, loadingAppointments, uploadReport, deleteReport, backendUrl } = useContext(DoctorContext)
   const { slotDateFormat } = useContext(AppContext)
 
   const [files, setFiles] = useState({})
@@ -107,12 +107,13 @@ const DoctorReports = () => {
                 {item.reportUrl ? (
                   <>
                     <a
-                      href={item.reportUrl}
-                      download
+                      href={`${backendUrl}/api/doctor/report/${item._id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-full border border-emerald-500 text-emerald-600 hover:bg-emerald-50"
                     >
-                      <span>Download</span>
-                      <span>⬇</span>
+                      <span>View</span>
+                      <span>↗</span>
                     </a>
                     <button
                       onClick={() => deleteReport(item._id)}

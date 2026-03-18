@@ -279,4 +279,29 @@ const verifyRazorpay = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointments, cancelAppointment, paymentRazorpay, verifyRazorpay }
+// Download appointment report for patient
+const downloadReportUser = async (req, res) => {
+    try {
+        const { appointmentId } = req.params
+        const { userId } = req.body
+
+        const appointment = await appointmentModel.findById(appointmentId)
+
+        if (!appointment || appointment.userId !== userId) {
+            return res.status(404).send('Report not found')
+        }
+
+        if (!appointment.reportData) {
+            return res.status(404).send('No report uploaded')
+        }
+
+        res.setHeader('Content-Type', appointment.reportMimeType || 'application/pdf')
+        res.setHeader('Content-Disposition', `inline; filename="${appointment.reportFilename || 'report.pdf'}"`)
+        res.send(appointment.reportData)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Failed to download report')
+    }
+}
+
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointments, cancelAppointment, paymentRazorpay, verifyRazorpay, downloadReportUser }

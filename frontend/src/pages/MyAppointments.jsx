@@ -188,11 +188,12 @@ const MyAppointments = () => {
 
               {item.isCompleted && item.reportUrl && !item.cancelled && (
                 <a
-                  href={item.reportUrl}
-                  download
+                  href={`${backendUrl}/api/user/report/${item._id}`}
+                  target='_blank'
+                  rel='noopener noreferrer'
                   className='sm:min-w-48 py-2 border border-emerald-500 rounded text-emerald-600 text-sm text-center hover:bg-emerald-50 transition-all'
                 >
-                  Download Report (PDF)
+                  View Report (PDF)
                 </a>
               )}
 
