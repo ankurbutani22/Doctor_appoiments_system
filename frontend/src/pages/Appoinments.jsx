@@ -195,109 +195,162 @@ const Appoinments = () => {
     }
 
     return (
-        <div className='pt-5'>
-            <div className='flex flex-col sm:flex-row gap-4'>
-                <div>
-                    <img className='bg-blue-600 w-full sm:max-w-72 rounded-lg' src={docInfo.image} alt={docInfo.name} />
-                </div> 
-                <div className='flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-80px sm:mt-0'>
-                    <p className='flex items-center gap-2 text-2xl font-medium text-gray-900'>
-                        {docInfo.name} 
-                        <img className='w-5' src={assets.verified_icon} alt="Verified" />
-                    </p>
-                    <div className='flex items-center gap-2 text-sm mt-1 text-gray-600'>
-                        <p>{docInfo.degree} - {docInfo.speciality}</p>
-                        <button className='py-0.5 px-2 border text-xs rounded-full'>{docInfo.experience}</button>
+        <div className='bg-slate-50 min-h-[calc(100vh-80px)] py-6 sm:py-8'>
+            <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
+                {/* Top: doctor card */}
+                <div className='grid grid-cols-1 md:grid-cols-[auto,1fr] gap-6 items-start'>
+                    <div className='flex justify-center md:justify-start'>
+                        <img className='bg-blue-600/90 w-48 h-48 md:w-56 md:h-56 rounded-2xl object-cover shadow-md' src={docInfo.image} alt={docInfo.name} />
                     </div>
-                    <div>
-                        <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>
-                            About <img src={assets.info_icon} alt="Info" />
+                    <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-7'>
+                        <p className='flex items-center gap-2 text-2xl font-semibold text-slate-900'>
+                            {docInfo.name}
+                            <img className='w-5' src={assets.verified_icon} alt="Verified" />
                         </p>
-                        <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{docInfo.about}</p>
-                    </div>
-                    <p className='text-gray-500 font-medium mt-4'>
-                        Appointment fee: <span className='text-gray-600'>{currencysymbol}{docInfo.fees}</span>
-                    </p>
-                </div>
-            </div>
-
-            <div className='sm:ml-72 sm:pl-4 font-medium text-gray-700 mt-4'>
-                <p>Booking slots</p>
-                <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
-                    {docSlots.length > 0 && docSlots.map((item, index) => (
-                        <div onClick={() => setSlotIndex(index)} key={index} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-blue-600 text-white' : 'border border-gray-300'}`}>
-                            <p>{item[0] && daysofweek[item[0].datetime.getDay()]}</p>
-                            <p>{item[0] && item[0].datetime.getDate()}</p>
+                        <div className='flex flex-wrap items-center gap-2 text-sm mt-2 text-slate-600'>
+                            <p>{docInfo.degree} - {docInfo.speciality}</p>
+                            <span className='inline-flex items-center px-2 py-0.5 rounded-full border border-slate-200 text-xs bg-slate-50'>
+                                {docInfo.experience}
+                            </span>
                         </div>
-                    ))}
-                </div>
-                
-                <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
-                    {docSlots.length > 0 && docSlots[slotIndex].map((item, index) => (
-                        <p onClick={() => setSlotTime(item.time)} className={`text-sm font-light shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-blue-600 text-white' : 'text-gray-400 border border-gray-300'}`} key={index}>
-                            {item.time.toLowerCase()} 
-                        </p>
-                    ))}
-                </div>
-                <button onClick={bookAppointment} className='bg-blue-600 text-white text-sm font-light px-12 py-3 rounded-full my-6'>Book an appointment</button>
 
-                {/* Rating section */}
-                <div className='mb-8 p-4 border border-gray-200 rounded-lg bg-white/80 max-w-xl'>
-                    <p className='font-semibold text-gray-800 mb-2'>Doctor Rating</p>
-                    <div className='flex items-center gap-2 mb-2'>
-                        <div className='flex items-center gap-1 text-yellow-400 text-lg'>
-                            {[1, 2, 3, 4, 5].map((star) => (
-                                <span key={star}>
-                                    {ratingSummary.averageRating >= star ? '★' : '☆'}
-                                </span>
-                            ))}
-                        </div>
-                        <span className='text-sm text-gray-600'>
-                            {ratingSummary.ratingCount > 0
-                                ? `${ratingSummary.averageRating.toFixed(1)} (${ratingSummary.ratingCount} ratings)`
-                                : 'No ratings yet'}
-                        </span>
-                    </div>
-
-                    {token && (
-                        <div className='mt-3'>
-                            <p className='text-sm text-gray-700 mb-1'>
-                                {userRating ? 'Update your rating:' : 'Rate this doctor:'}
+                        <div className='mt-4'>
+                            <p className='flex items-center gap-1 text-sm font-medium text-slate-900'>
+                                About <img src={assets.info_icon} alt="Info" className='w-3.5' />
                             </p>
-                            <div className='flex items-center gap-1 mb-2 text-2xl'>
+                            <p className='text-sm text-slate-600 mt-1 leading-relaxed max-w-xl'>{docInfo.about}</p>
+                        </div>
+
+                        <div className='mt-4 flex flex-wrap items-center gap-4'>
+                            <p className='text-sm text-slate-600'>
+                                <span className='font-medium text-slate-800'>Appointment fee:</span>{' '}
+                                <span>{currencysymbol}{docInfo.fees}</span>
+                            </p>
+                            <div className='flex items-center gap-1 text-xs text-amber-500'>
                                 {[1, 2, 3, 4, 5].map((star) => (
+                                    <span key={star}>{ratingSummary.averageRating >= star ? '★' : '☆'}</span>
+                                ))}
+                                <span className='text-slate-500 ml-1'>
+                                    {ratingSummary.ratingCount > 0
+                                        ? `${ratingSummary.averageRating.toFixed(1)} • ${ratingSummary.ratingCount} ratings`
+                                        : 'No ratings yet'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Slots + rating */}
+                <div className='grid grid-cols-1 lg:grid-cols-[1.5fr,1.1fr] gap-6 mt-8 items-start'>
+                    {/* Booking slots */}
+                    <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6'>
+                        <p className='font-semibold text-slate-900 text-base sm:text-lg'>Book an appointment</p>
+                        <p className='text-xs text-slate-500 mt-1'>Select a day and time slot that works best for you.</p>
+
+                        <div className='mt-5'>
+                            <p className='text-xs font-medium text-slate-500 uppercase tracking-wide mb-2'>Days</p>
+                            <div className='flex gap-3 items-center w-full overflow-x-auto pb-1'>
+                                {docSlots.length > 0 && docSlots.map((item, index) => (
                                     <button
                                         type='button'
-                                        key={star}
-                                        onClick={() => setUserRating(star)}
-                                        className='focus:outline-none'
+                                        onClick={() => setSlotIndex(index)}
+                                        key={index}
+                                        className={`text-center px-3 py-3 rounded-2xl min-w-[3.5rem] text-xs font-medium border transition-all ${slotIndex === index ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'border-slate-200 text-slate-600 bg-slate-50 hover:bg-slate-100'}`}
                                     >
-                                        <span className={star <= userRating ? 'text-yellow-400' : 'text-gray-300'}>
-                                            ★
-                                        </span>
+                                        <p>{item[0] && daysofweek[item[0].datetime.getDay()]}</p>
+                                        <p className='mt-0.5 text-base'>{item[0] && item[0].datetime.getDate()}</p>
                                     </button>
                                 ))}
                             </div>
-                            <textarea
-                                rows={3}
-                                className='w-full border border-gray-300 rounded-md text-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
-                                placeholder='Write your feedback (optional)'
-                                value={userComment}
-                                onChange={(e) => setUserComment(e.target.value)}
-                            />
-                            <button
-                                type='button'
-                                disabled={loadingRating}
-                                onClick={submitRating}
-                                className='mt-3 px-6 py-2 rounded-full text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed'
-                            >
-                                {loadingRating ? 'Saving...' : userRating ? 'Update rating' : 'Submit rating'}
-                            </button>
                         </div>
-                    )}
+
+                        <div className='mt-5'>
+                            <p className='text-xs font-medium text-slate-500 uppercase tracking-wide mb-2'>Time slots</p>
+                            <div className='flex items-center gap-3 w-full overflow-x-auto pb-1'>
+                                {docSlots.length > 0 && docSlots[slotIndex].map((item, index) => (
+                                    <button
+                                        type='button'
+                                        onClick={() => setSlotTime(item.time)}
+                                        className={`text-xs sm:text-sm font-normal shrink-0 px-4 py-2 rounded-full border transition-all ${item.time === slotTime ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'text-slate-500 border-slate-200 bg-slate-50 hover:bg-slate-100'}`}
+                                        key={index}
+                                    >
+                                        {item.time.toLowerCase()}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={bookAppointment}
+                            className='mt-6 inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-8 py-2.5 rounded-full shadow-sm transition-colors'
+                        >
+                            Confirm booking
+                        </button>
+                    </div>
+
+                    {/* Rating section */}
+                    <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6'>
+                        <p className='font-semibold text-slate-900 mb-1 text-base sm:text-lg'>Doctor rating</p>
+                        <p className='text-xs text-slate-500 mb-4'>Share your experience to help other patients.</p>
+
+                        <div className='flex items-center gap-2 mb-3'>
+                            <div className='flex items-center gap-1 text-amber-400 text-lg'>
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span key={star}>{ratingSummary.averageRating >= star ? '★' : '☆'}</span>
+                                ))}
+                            </div>
+                            <span className='text-xs text-slate-500'>
+                                {ratingSummary.ratingCount > 0
+                                    ? `${ratingSummary.averageRating.toFixed(1)} (${ratingSummary.ratingCount} ratings)`
+                                    : 'No ratings yet'}
+                            </span>
+                        </div>
+
+                        {token ? (
+                            <div className='mt-3'>
+                                <p className='text-sm text-slate-800 mb-2'>
+                                    {userRating ? 'Update your rating' : 'Rate this doctor'}
+                                </p>
+                                <div className='flex items-center gap-1 mb-2 text-2xl'>
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <button
+                                            type='button'
+                                            key={star}
+                                            onClick={() => setUserRating(star)}
+                                            className='focus:outline-none'
+                                        >
+                                            <span className={star <= userRating ? 'text-amber-400' : 'text-slate-300'}>
+                                                ★
+                                            </span>
+                                        </button>
+                                    ))}
+                                </div>
+                                <textarea
+                                    rows={3}
+                                    className='w-full border border-slate-200 rounded-lg text-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-slate-50'
+                                    placeholder='Write your feedback (optional)'
+                                    value={userComment}
+                                    onChange={(e) => setUserComment(e.target.value)}
+                                />
+                                <button
+                                    type='button'
+                                    disabled={loadingRating}
+                                    onClick={submitRating}
+                                    className='mt-3 px-6 py-2 rounded-full text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center'
+                                >
+                                    {loadingRating ? 'Saving...' : userRating ? 'Update rating' : 'Submit rating'}
+                                </button>
+                            </div>
+                        ) : (
+                            <p className='mt-3 text-xs text-slate-500'>Login to rate this doctor.</p>
+                        )}
+                    </div>
+                </div>
+
+                <div className='mt-10'>
+                    <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
                 </div>
             </div>
-            <RelatedDoctors docId={docId} speciality={docInfo.speciality}/>
         </div>
     );
 }
