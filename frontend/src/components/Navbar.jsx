@@ -4,6 +4,7 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { AppContext } from '../context/AppContext.jsx'
 import { DoctorContext } from '../context/DoctorContext.jsx'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -13,6 +14,9 @@ const Navbar = () => {
 
   const [profileSheet, setProfileSheet] = useState(false)
   const [userCoins, setUserCoins] = useState(0)
+  const [showCoinModal, setShowCoinModal] = useState(false)
+  const [coinAmount, setCoinAmount] = useState('100')
+  const [addingCoins, setAddingCoins] = useState(false)
 
   const logout = () => {
     if (token) { setToken(false); localStorage.removeItem('token') }
@@ -29,6 +33,44 @@ const Navbar = () => {
   }
 
   useEffect(() => { if (token) getUserCoins() }, [token])
+
+  const handleOpenCoinModal = (e) => {
+    e.stopPropagation()
+    if (!token || dToken) return
+    setShowCoinModal(true)
+  }
+
+  const handleAddCoins = async () => {
+    if (!token || dToken) return
+
+    const amount = Number(coinAmount)
+    if (!amount || amount <= 0) {
+      toast.error('Enter a valid coin amount')
+      return
+    }
+
+    try {
+      setAddingCoins(true)
+      const { data } = await axios.post(
+        backendUrl + '/api/coin/add',
+        { amount },
+        { headers: { token } }
+      )
+
+      if (data.success) {
+        setUserCoins(data.coins)
+        toast.success(data.message || 'Coins added successfully')
+        setShowCoinModal(false)
+      } else {
+        toast.error(data.message || 'Failed to add coins')
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message || 'Failed to add coins')
+    } finally {
+      setAddingCoins(false)
+    }
+  }
 
   // Load doctor profile data when a doctor is logged in so we can
   // show the correct profile image in the navbar.
@@ -104,7 +146,11 @@ const Navbar = () => {
           {token && userData ? (
             <div className="relative group">
               <div className="flex items-center gap-2 cursor-pointer">
-                <div className="flex items-center gap-1.5 bg-linear-to-r from-yellow-400 to-orange-500 px-3 py-1.5 rounded-full text-white font-bold text-sm shadow">
+                <div
+                  className="flex items-center gap-1.5 bg-linear-to-r from-yellow-400 to-orange-500 px-3 py-1.5 rounded-full text-white font-bold text-sm shadow cursor-pointer"
+                  onClick={handleOpenCoinModal}
+                  title="Click to add coins"
+                >
                   🪙 {userCoins}
                 </div>
                 <img className="w-10 h-10 rounded-full border-2 border-primary object-cover"
@@ -158,7 +204,10 @@ const Navbar = () => {
         <img onClick={() => navigate('/')} className="w-32 cursor-pointer" src={assets.logo} alt="Logo" />
         <div className="flex items-center gap-2">
           {(token && userData) && (
-            <span className="flex items-center gap-1 bg-linear-to-r from-yellow-400 to-orange-500 px-2.5 py-1 rounded-full text-white text-xs font-bold">
+            <span
+              className="flex items-center gap-1 bg-linear-to-r from-yellow-400 to-orange-500 px-2.5 py-1 rounded-full text-white text-xs font-bold cursor-pointer"
+              onClick={handleOpenCoinModal}
+            >
               🪙 {userCoins}
             </span>
           )}
@@ -272,6 +321,53 @@ const Navbar = () => {
           })}
         </div>
       </nav>
+
+      {/* ── Add Coins Modal ── */}
+      {showCoinModal && token && !dToken && (
+        <div
+          className="fixed inset-0 z-[70] bg-black/50 flex items-center justify-center px-4"
+          onClick={() => !addingCoins && setShowCoinModal(false)}
+        >
+          <div
+            className="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-5 space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-800">Add Coins</h2>
+              <button
+                className="text-gray-400 hover:text-gray-600 text-xl leading-none"
+                onClick={() => !addingCoins && setShowCoinModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <p className="text-sm text-gray-500">
+              Current balance: <span className="font-semibold text-gray-800">🪙 {userCoins}</span>
+            </p>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Coins to add</label>
+              <input
+                type="number"
+                min="1"
+                value={coinAmount}
+                onChange={(e) => setCoinAmount(e.target.value)}
+                className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/15"
+                placeholder="Enter coins (e.g. 100)"
+              />
+            </div>
+            <button
+              onClick={handleAddCoins}
+              disabled={addingCoins}
+              className="w-full py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {addingCoins ? 'Adding...' : 'Add Coins'}
+            </button>
+            <p className="text-[11px] text-gray-400 text-center">
+              This is a demo coin wallet. No real payment is processed.
+            </p>
+          </div>
+        </div>
+      )}
     </>
   )
 }
