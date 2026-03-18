@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import appointmentModel from "../models/appointmentModel.js"
 import fs from 'fs'
 import notificationModel from "../models/notificationModel.js"
+import ratingModel from "../models/ratingModel.js"
 
 
 const changeAvailablity = async (req, res) => {
@@ -89,6 +90,32 @@ const doctorDashboard = async (req, res) => {
             latestAppointments: appointments.reverse().slice(0, 5)
         }
         res.json({ success: true, dashData })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// API to get rating summary and all ratings for this doctor
+const doctorRatings = async (req, res) => {
+    try {
+        const { docId } = req.body
+
+        const doctor = await doctorModel.findById(docId).select('averageRating ratingCount')
+        if (!doctor) {
+            return res.json({ success: false, message: 'Doctor not found' })
+        }
+
+        const ratings = await ratingModel.find({ docId }).sort({ date: -1 }).select('-__v')
+
+        res.json({
+            success: true,
+            ratingSummary: {
+                averageRating: doctor.averageRating || 0,
+                ratingCount: doctor.ratingCount || 0
+            },
+            ratings
+        })
     } catch (error) {
         console.log(error)
         res.json({ success: false, message: error.message })
@@ -301,5 +328,5 @@ export {
     changeAvailablity, doctorList,
     loginDoctor, appointmentsDoctor, appointmentCancel, appointmentComplete,
     doctorDashboard, doctorProfile, updateDoctorProfile, prescribeMedicines,
-    uploadReport, deleteReport, downloadReportDoctor
+    uploadReport, deleteReport, downloadReportDoctor, doctorRatings
 }

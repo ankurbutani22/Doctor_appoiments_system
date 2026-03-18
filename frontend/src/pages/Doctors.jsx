@@ -61,6 +61,11 @@ const Doctors = () => {
                 </div>
                 <p className='text-gray-900 text-base font-semibold leading-snug'>{item.name}</p>
                 <p className='text-gray-600 text-sm'>{item.speciality}</p>
+                <p className='text-xs text-yellow-600 mt-1'>
+                  {item.ratingCount > 0
+                    ? `★ ${item.averageRating?.toFixed(1)} (${item.ratingCount} ratings)`
+                    : 'No ratings yet'}
+                </p>
               </div>
             </div>
           ))}

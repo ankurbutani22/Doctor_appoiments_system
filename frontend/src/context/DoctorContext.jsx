@@ -12,9 +12,12 @@ const DoctorContextProvider = (props) => {
     const [appointments, setAppointments] = useState([])
     const [dashData, setDashData] = useState(false)
     const [profileData, setProfileData] = useState(false)
+    const [ratings, setRatings] = useState([])
+    const [ratingSummary, setRatingSummary] = useState(null)
     const [loadingAppointments, setLoadingAppointments] = useState(false)
     const [loadingDashData, setLoadingDashData] = useState(false)
     const [loadingProfile, setLoadingProfile] = useState(false)
+    const [loadingRatings, setLoadingRatings] = useState(false)
 
     const getAppointments = async () => {
         try {
@@ -47,6 +50,24 @@ const DoctorContextProvider = (props) => {
             toast.error(error.message)
         } finally {
             setLoadingDashData(false)
+        }
+    }
+
+    const getDoctorRatings = async () => {
+        try {
+            setLoadingRatings(true)
+            const { data } = await axios.get(backendUrl + '/api/doctor/ratings', { headers: { dToken } })
+            if (data.success) {
+                setRatingSummary(data.ratingSummary)
+                setRatings(data.ratings || [])
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        } finally {
+            setLoadingRatings(false)
         }
     }
 
@@ -184,6 +205,7 @@ const DoctorContextProvider = (props) => {
         loadingDashData,
         profileData, setProfileData, getProfileData,
         loadingProfile,
+        ratings, ratingSummary, getDoctorRatings, loadingRatings,
         completeAppointment, cancelAppointment, prescribeMedicines,
         uploadReport, deleteReport,
         viewReport

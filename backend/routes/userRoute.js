@@ -1,5 +1,5 @@
 import express from 'express'
-import { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointments, cancelAppointment, paymentRazorpay, verifyRazorpay, downloadReportUser } from '../controllers/userController.js'
+import { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointments, cancelAppointment, paymentRazorpay, verifyRazorpay, downloadReportUser, rateDoctor, getDoctorRatingForUser } from '../controllers/userController.js'
 import { getUserNotifications, markUserNotificationsRead } from '../controllers/notificationController.js'
 import authUser from '../middlewares/authUser.js'
 import uplod from '../middlewares/multer.js'
@@ -21,4 +21,6 @@ userRouter.post('/notifications/mark-read', authUser, markUserNotificationsRead)
 userRouter.post('/cancel-appointment', authUser, cancelAppointment)
 userRouter.post('/payment-razorpay', authUser, paymentRazorpay)
 userRouter.post('/verifyRazorpay', authUser, verifyRazorpay)
+userRouter.post('/rate-doctor', authUser, rateDoctor)
+userRouter.get('/doctor-rating/:docId', authUser, getDoctorRatingForUser)
 export default userRouter

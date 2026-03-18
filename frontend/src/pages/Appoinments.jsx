@@ -17,6 +17,10 @@ const Appoinments = () => {
     const [docSlots, setDocSlots] = useState([]);
     const [slotIndex, setSlotIndex] = useState(0);
     const [slotTime, setSlotTime] = useState('');
+    const [ratingSummary, setRatingSummary] = useState({ averageRating: 0, ratingCount: 0 });
+    const [userRating, setUserRating] = useState(0);
+    const [userComment, setUserComment] = useState('');
+    const [loadingRating, setLoadingRating] = useState(false);
 
     const fetchDocInfo = useCallback(async () => {
         if (doctors) {
@@ -76,6 +80,74 @@ const Appoinments = () => {
         setDocSlots(allSlots); // સ્ટેટ એકસાથે અપડેટ કરો
     }, [docInfo]); // docInfo અહિયાં હોવું જરૂરી છે
 
+    const fetchRatingInfo = useCallback(async () => {
+        if (!docInfo) return;
+
+        // જો યુઝર લોગિન ન હોય તો ફક્ત doctor list માંથી summary લ્યો
+        if (!token) {
+            setRatingSummary({
+                averageRating: docInfo.averageRating || 0,
+                ratingCount: docInfo.ratingCount || 0
+            });
+            return;
+        }
+
+        try {
+            setLoadingRating(true);
+            const { data } = await axios.get(backendUrl + '/api/user/doctor-rating/' + docId, { headers: { token } });
+            if (data.success) {
+                setRatingSummary({
+                    averageRating: data.averageRating || 0,
+                    ratingCount: data.ratingCount || 0
+                });
+
+                if (data.userRating) {
+                    setUserRating(data.userRating.rating || 0);
+                    setUserComment(data.userRating.comment || '');
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingRating(false);
+        }
+    }, [backendUrl, docId, docInfo, token]);
+
+    const submitRating = async () => {
+        if (!token) {
+            toast.warn('Login to rate doctor');
+            return navigate('/login');
+        }
+
+        if (!userRating) {
+            return toast.error('Please select a rating');
+        }
+
+        try {
+            setLoadingRating(true);
+            const { data } = await axios.post(
+                backendUrl + '/api/user/rate-doctor',
+                { docId, rating: userRating, comment: userComment },
+                { headers: { token } }
+            );
+
+            if (data.success) {
+                toast.success(data.message);
+                setRatingSummary({
+                    averageRating: data.averageRating || 0,
+                    ratingCount: data.ratingCount || 0
+                });
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        } finally {
+            setLoadingRating(false);
+        }
+    };
+
     const bookAppointment = async () => {
         if (!token) {
             toast.warn('Login to book appointment');
@@ -114,8 +186,9 @@ const Appoinments = () => {
     useEffect(() => {
         if (docInfo) {
             getAvailableSlots();
+            fetchRatingInfo();
         }
-    }, [docInfo, getAvailableSlots]); 
+    }, [docInfo, getAvailableSlots, fetchRatingInfo]); 
 
     if (!docInfo) {
         return <div className='p-10 text-center'>Loading doctor information...</div>;
@@ -167,6 +240,62 @@ const Appoinments = () => {
                     ))}
                 </div>
                 <button onClick={bookAppointment} className='bg-blue-600 text-white text-sm font-light px-12 py-3 rounded-full my-6'>Book an appointment</button>
+
+                {/* Rating section */}
+                <div className='mb-8 p-4 border border-gray-200 rounded-lg bg-white/80 max-w-xl'>
+                    <p className='font-semibold text-gray-800 mb-2'>Doctor Rating</p>
+                    <div className='flex items-center gap-2 mb-2'>
+                        <div className='flex items-center gap-1 text-yellow-400 text-lg'>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span key={star}>
+                                    {ratingSummary.averageRating >= star ? '★' : '☆'}
+                                </span>
+                            ))}
+                        </div>
+                        <span className='text-sm text-gray-600'>
+                            {ratingSummary.ratingCount > 0
+                                ? `${ratingSummary.averageRating.toFixed(1)} (${ratingSummary.ratingCount} ratings)`
+                                : 'No ratings yet'}
+                        </span>
+                    </div>
+
+                    {token && (
+                        <div className='mt-3'>
+                            <p className='text-sm text-gray-700 mb-1'>
+                                {userRating ? 'Update your rating:' : 'Rate this doctor:'}
+                            </p>
+                            <div className='flex items-center gap-1 mb-2 text-2xl'>
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <button
+                                        type='button'
+                                        key={star}
+                                        onClick={() => setUserRating(star)}
+                                        className='focus:outline-none'
+                                    >
+                                        <span className={star <= userRating ? 'text-yellow-400' : 'text-gray-300'}>
+                                            ★
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                            <textarea
+                                rows={3}
+                                className='w-full border border-gray-300 rounded-md text-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
+                                placeholder='Write your feedback (optional)'
+                                value={userComment}
+                                onChange={(e) => setUserComment(e.target.value)}
+                            />
+                            <button
+                                type='button'
+                                disabled={loadingRating}
+                                onClick={submitRating}
+                                className='mt-3 px-6 py-2 rounded-full text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed'
+                            >
+                                {loadingRating ? 'Saving...' : userRating ? 'Update rating' : 'Submit rating'}
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
             <RelatedDoctors docId={docId} speciality={docInfo.speciality}/>
         </div>

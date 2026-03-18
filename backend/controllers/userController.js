@@ -7,6 +7,7 @@ import doctorModel from '../models/doctorModel.js'
 import appointmentModel from '../models/appointmentModel.js'
 import notificationModel from '../models/notificationModel.js'
 import Razorpay from 'razorpay'
+import ratingModel from '../models/ratingModel.js'
 
 
 // API to make payment of appointment using razorpay
@@ -214,6 +215,125 @@ const listAppointments = async (req, res) => {
     }
 }
 
+// Add or update a rating for a doctor by a user
+const rateDoctor = async (req, res) => {
+    try {
+        const { userId, docId, rating, comment } = req.body
+
+        if (!docId || !rating) {
+            return res.json({ success: false, message: 'Doctor and rating are required' })
+        }
+
+        const numericRating = Number(rating)
+        if (!numericRating || numericRating < 1 || numericRating > 5) {
+            return res.json({ success: false, message: 'Rating must be between 1 and 5' })
+        }
+
+        // Ensure doctor exists
+        const doctor = await doctorModel.findById(docId)
+        if (!doctor) {
+            return res.json({ success: false, message: 'Doctor not found' })
+        }
+
+        // User must have at least one completed appointment with this doctor
+        const completedAppointment = await appointmentModel.findOne({
+            userId,
+            docId,
+            isCompleted: true,
+            cancelled: { $ne: true }
+        })
+
+        if (!completedAppointment) {
+            return res.json({
+                success: false,
+                message: 'You can rate this doctor only after a completed appointment.'
+            })
+        }
+
+        const user = await userModel.findById(userId).select('name')
+        if (!user) {
+            return res.json({ success: false, message: 'User not found' })
+        }
+
+        // Upsert rating (one rating per doctor per user)
+        await ratingModel.findOneAndUpdate(
+            { docId, userId },
+            {
+                docId,
+                userId,
+                userName: user.name,
+                rating: numericRating,
+                comment: comment || '',
+                date: Date.now()
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        )
+
+        // Recalculate doctor's rating summary
+        const stats = await ratingModel.aggregate([
+            { $match: { docId } },
+            {
+                $group: {
+                    _id: '$docId',
+                    avgRating: { $avg: '$rating' },
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+
+        const avgRating = stats[0]?.avgRating || 0
+        const count = stats[0]?.count || 0
+
+        await doctorModel.findByIdAndUpdate(docId, {
+            averageRating: avgRating,
+            ratingCount: count
+        })
+
+        res.json({
+            success: true,
+            message: 'Rating saved successfully',
+            averageRating: avgRating,
+            ratingCount: count
+        })
+    } catch (error) {
+        console.log(error)
+        // Handle duplicate key error from unique index gracefully
+        if (error.code === 11000) {
+            return res.json({ success: false, message: 'You have already rated this doctor.' })
+        }
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// Get rating summary for a doctor plus current user's rating (if any)
+const getDoctorRatingForUser = async (req, res) => {
+    try {
+        const { userId } = req.body
+        const { docId } = req.params
+
+        if (!docId) {
+            return res.json({ success: false, message: 'Doctor id is required' })
+        }
+
+        const doctor = await doctorModel.findById(docId).select('averageRating ratingCount')
+        if (!doctor) {
+            return res.json({ success: false, message: 'Doctor not found' })
+        }
+
+        const userRating = await ratingModel.findOne({ docId, userId }).select('-_id rating comment date')
+
+        res.json({
+            success: true,
+            averageRating: doctor.averageRating || 0,
+            ratingCount: doctor.ratingCount || 0,
+            userRating
+        })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
 
 // Api to cancle appointment
 
@@ -317,4 +437,4 @@ const downloadReportUser = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointments, cancelAppointment, paymentRazorpay, verifyRazorpay, downloadReportUser }
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointments, cancelAppointment, paymentRazorpay, verifyRazorpay, downloadReportUser, rateDoctor, getDoctorRatingForUser }
