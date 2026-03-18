@@ -2,6 +2,7 @@ import doctorModel from "../models/doctorModel.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import appointmentModel from "../models/appointmentModel.js"
+import { v2 as cloudinary } from 'cloudinary'
 
 
 const changeAvailablity = async (req, res) => {
@@ -176,8 +177,41 @@ const appointmentCancel = async (req, res) => {
     }
 }
 
+// API for uploading or updating an appointment report (PDF)
+const uploadReport = async (req, res) => {
+    try {
+        const { docId, appointmentId } = req.body
+        const file = req.file
+
+        if (!file) {
+            return res.json({ success: false, message: 'Report file is required' })
+        }
+
+        const appointmentData = await appointmentModel.findById(appointmentId)
+
+        if (!appointmentData || appointmentData.docId !== docId) {
+            return res.json({ success: false, message: 'Not authorized to upload report for this appointment' })
+        }
+
+        // Upload PDF report to Cloudinary as a raw file
+        const uploadResult = await cloudinary.uploader.upload(file.path, {
+            resource_type: 'raw'
+        })
+
+        await appointmentModel.findByIdAndUpdate(appointmentId, {
+            reportUrl: uploadResult.secure_url
+        })
+
+        res.json({ success: true, message: 'Report uploaded successfully', reportUrl: uploadResult.secure_url })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
 export {
     changeAvailablity, doctorList,
     loginDoctor, appointmentsDoctor, appointmentCancel, appointmentComplete,
-    doctorDashboard, doctorProfile, updateDoctorProfile, prescribeMedicines
+    doctorDashboard, doctorProfile, updateDoctorProfile, prescribeMedicines,
+    uploadReport
 }

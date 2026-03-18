@@ -13,6 +13,7 @@ const appointmentSchema = new mongoose.Schema({
     payment: { type: Boolean, default: false },
     isCompleted: { type: Boolean, default: false },
     prescribedMedicines: { type: String, default: "" },
+    reportUrl: { type: String, default: "" },
 })
 
 // અહીં સુધારો કર્યો છે: mongoose.models.appointment

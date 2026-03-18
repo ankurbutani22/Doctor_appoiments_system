@@ -186,6 +186,17 @@ const MyAppointments = () => {
               {!item.cancelled && <button onClick={() => cancelAppointment(item._id)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all'>Cancel Appointment</button>}
               {item.cancelled && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
 
+              {item.isCompleted && item.reportUrl && !item.cancelled && (
+                <a
+                  href={item.reportUrl}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='sm:min-w-48 py-2 border border-emerald-500 rounded text-emerald-600 text-sm text-center hover:bg-emerald-50 transition-all'
+                >
+                  View Report (PDF)
+                </a>
+              )}
+
             </div>
           </div>
         ))}

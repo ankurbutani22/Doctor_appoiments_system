@@ -13,6 +13,7 @@ import DoctorAppointments from './pages/DoctorAppointments'
 import DoctorProfile from './pages/DoctorProfile'
 import MyMedicines from './pages/MyMedicines'
 import DoctorMedicines from './pages/DoctorMedicines'
+import DoctorReports from './pages/DoctorReports'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -72,6 +73,7 @@ const App = () => {
           <Route path='/doctor-appointments' element={<DoctorAppointments />} />
           <Route path='/doctor-profile' element={<DoctorProfile />} />
           <Route path='/doctor-medicines' element={<DoctorMedicines />} />
+          <Route path='/doctor-reports' element={<DoctorReports />} />
 
           {/* fallback to home for any unmatched path */}
           <Route path='*' element={<Navigate replace to='/' />} />

@@ -44,6 +44,7 @@ const Navbar = () => {
       { to: '/doctor-dashboard', label: 'DASHBOARD' },
       { to: '/doctor-appointments', label: 'APPOINTMENTS' },
       { to: '/doctor-medicines', label: 'MEDICINES' },
+      { to: '/doctor-reports', label: 'REPORTS' },
     ]
     : [
       { to: '/', label: 'HOME' },
@@ -61,6 +62,7 @@ const Navbar = () => {
       { to: '/doctor-dashboard', label: 'Dashboard', icon: '🏠' },
       { to: '/doctor-appointments', label: 'Appointments', icon: '📅' },
       { to: '/doctor-medicines', label: 'Medicines', icon: '💊' },
+      { to: '/doctor-reports', label: 'Reports', icon: '📄' },
       { to: '/doctor-profile', label: 'Profile', icon: '👤' },
     ]
     : token
