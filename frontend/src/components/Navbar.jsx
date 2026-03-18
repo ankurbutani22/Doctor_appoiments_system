@@ -17,6 +17,8 @@ const Navbar = () => {
   const [showCoinModal, setShowCoinModal] = useState(false)
   const [coinAmount, setCoinAmount] = useState('100')
   const [addingCoins, setAddingCoins] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [notifications] = useState([])
 
   const logout = () => {
     if (token) { setToken(false); localStorage.removeItem('token') }
@@ -142,7 +144,45 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
+              {(token || dToken) && (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setShowNotifications(prev => !prev)}
+                    className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50"
+                  >
+                    <span>🔔</span>
+                    {notifications.length > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] leading-none px-1.5 py-0.5 rounded-full">
+                        {notifications.length}
+                      </span>
+                    )}
+                  </button>
+                  {showNotifications && (
+                    <div className="absolute right-0 mt-2 w-64 bg-white border rounded-xl shadow-2xl z-50 text-xs">
+                      <div className="px-3 py-2 border-b font-semibold text-gray-700 flex items-center justify-between">
+                        <span>Notifications</span>
+                        {notifications.length > 0 && (
+                          <span className="text-[10px] text-gray-400">{notifications.length} new</span>
+                        )}
+                      </div>
+                      <div className="max-h-64 overflow-y-auto p-2">
+                        {notifications.length === 0 ? (
+                          <p className="text-gray-500 text-xs px-2 py-3 text-center">No new notifications</p>
+                        ) : (
+                          notifications.map((n, idx) => (
+                            <div key={idx} className="px-2 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
+                              <p className="text-xs font-medium">{n.title}</p>
+                              {n.message && <p className="text-[11px] text-gray-500 mt-0.5">{n.message}</p>}
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
           {token && userData ? (
             <div className="flex items-center gap-3">
               {/* Coin pill - its own click target, NOT part of the profile dropdown group */}
@@ -211,6 +251,20 @@ const Navbar = () => {
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-md flex items-center justify-between px-4 h-16">
         <img onClick={() => navigate('/')} className="w-32 cursor-pointer" src={assets.logo} alt="Logo" />
         <div className="flex items-center gap-2">
+            {(token || dToken) && (
+              <button
+                type="button"
+                onClick={() => setShowNotifications(prev => !prev)}
+                className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 mr-1"
+              >
+                <span>🔔</span>
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] leading-none px-1.5 py-0.5 rounded-full">
+                    {notifications.length}
+                  </span>
+                )}
+              </button>
+            )}
           {(token && userData) && (
             <span
               className="flex items-center gap-1 bg-linear-to-r from-yellow-400 to-orange-500 px-2.5 py-1 rounded-full text-white text-xs font-bold cursor-pointer"
