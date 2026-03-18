@@ -49,8 +49,8 @@ const DoctorAppointments = () => {
                 </div>
             </div>
 
-            {/* Table container */}
-            <div className='bg-white border border-gray-200 rounded-xl text-sm max-h-[70vh] min-h-[50vh] overflow-y-auto shadow-sm'>
+            {/* Table container with internal scroll for many appointments */}
+            <div className='bg-white border border-gray-200 rounded-xl text-sm max-h-[420px] overflow-y-auto shadow-sm'>
 
                 {showModal && (
                     <PrescriptionModal
