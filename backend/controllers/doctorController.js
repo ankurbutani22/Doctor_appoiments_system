@@ -193,10 +193,10 @@ const uploadReport = async (req, res) => {
             return res.json({ success: false, message: 'Appointment not found' })
         }
 
-        // Upload PDF report to Cloudinary in a browser-friendly way
-        // Let Cloudinary auto-detect the correct resource type for the PDF
+        // Upload PDF report as a raw file so Cloudinary treats it as a document
         const uploadResult = await cloudinary.uploader.upload(file.path, {
-            resource_type: 'auto',
+            resource_type: 'raw',
+            format: 'pdf',
         })
 
         await appointmentModel.findByIdAndUpdate(appointmentId, {
@@ -210,9 +210,29 @@ const uploadReport = async (req, res) => {
     }
 }
 
+// API to delete/clear an uploaded report for an appointment
+const deleteReport = async (req, res) => {
+    try {
+        const { appointmentId } = req.body
+
+        const appointmentData = await appointmentModel.findById(appointmentId)
+
+        if (!appointmentData) {
+            return res.json({ success: false, message: 'Appointment not found' })
+        }
+
+        await appointmentModel.findByIdAndUpdate(appointmentId, { reportUrl: '' })
+
+        res.json({ success: true, message: 'Report removed successfully' })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
 export {
     changeAvailablity, doctorList,
     loginDoctor, appointmentsDoctor, appointmentCancel, appointmentComplete,
     doctorDashboard, doctorProfile, updateDoctorProfile, prescribeMedicines,
-    uploadReport
+    uploadReport, deleteReport
 }

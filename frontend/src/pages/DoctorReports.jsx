@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import PageLoader from '../components/PageLoader'
 
 const DoctorReports = () => {
-  const { dToken, appointments, getAppointments, loadingAppointments, uploadReport } = useContext(DoctorContext)
+  const { dToken, appointments, getAppointments, loadingAppointments, uploadReport, deleteReport } = useContext(DoctorContext)
   const { slotDateFormat } = useContext(AppContext)
 
   const [files, setFiles] = useState({})
@@ -103,19 +103,27 @@ const DoctorReports = () => {
               </div>
 
               {/* Status / view link */}
-              <div className="w-full text-right text-xs">
+              <div className="w-full flex md:justify-end gap-2 text-xs">
                 {item.reportUrl ? (
-                  <a
-                    href={item.reportUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-end gap-1 text-emerald-600 hover:text-emerald-700"
-                  >
-                    <span>View Report</span>
-                    <span>↗</span>
-                  </a>
+                  <>
+                    <a
+                      href={item.reportUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-full border border-emerald-500 text-emerald-600 hover:bg-emerald-50"
+                    >
+                      <span>View</span>
+                      <span>↗</span>
+                    </a>
+                    <button
+                      onClick={() => deleteReport(item._id)}
+                      className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-full border border-red-400 text-red-500 hover:bg-red-50"
+                    >
+                      Remove
+                    </button>
+                  </>
                 ) : (
-                  <span className="text-gray-400">No report uploaded</span>
+                  <span className="text-gray-400 self-center">No report uploaded</span>
                 )}
               </div>
             </div>
