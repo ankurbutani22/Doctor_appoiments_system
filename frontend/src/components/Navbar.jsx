@@ -144,30 +144,38 @@ const Navbar = () => {
 
         <div className="flex items-center gap-3">
           {token && userData ? (
-            <div className="relative group">
-              <div className="flex items-center gap-2 cursor-pointer">
-                <div
-                  className="flex items-center gap-1.5 bg-linear-to-r from-yellow-400 to-orange-500 px-3 py-1.5 rounded-full text-white font-bold text-sm shadow cursor-pointer"
-                  onClick={handleOpenCoinModal}
-                  title="Click to add coins"
-                >
-                  🪙 {userCoins}
-                </div>
-                <img className="w-10 h-10 rounded-full border-2 border-primary object-cover"
-                  src={(userData.image && userData.image.length > 500) ? assets.profile_pic : (userData.image || assets.profile_pic)} alt="" />
-                <img className="w-2.5" src={assets.dropdown_icon} alt="" />
+            <div className="flex items-center gap-3">
+              {/* Coin pill - its own click target, NOT part of the profile dropdown group */}
+              <div
+                className="flex items-center gap-1.5 bg-linear-to-r from-yellow-400 to-orange-500 px-3 py-1.5 rounded-full text-white font-bold text-sm shadow cursor-pointer"
+                onClick={handleOpenCoinModal}
+                title="Click to add coins"
+              >
+                🪙 {userCoins}
               </div>
-              <div className="absolute right-0 top-full pt-4 z-50 hidden group-hover:block">
-                <div className="min-w-48 bg-white border rounded-xl shadow-2xl overflow-hidden">
-                  <div className="bg-gray-50 px-4 py-3 border-b">
-                    <p className="font-bold text-gray-800">{userData.name}</p>
-                    <p className="text-xs text-gray-500">🪙 {userCoins} coins</p>
-                  </div>
-                  <div className="p-2 flex flex-col text-sm text-gray-600">
-                    <p onClick={() => navigate('my-profile')} className="hover:bg-blue-50 hover:text-blue-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">👤 My Profile</p>
-                    <p onClick={() => navigate('/my-appointments')} className="hover:bg-blue-50 hover:text-blue-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">📅 My Appointments</p>
-                    <hr className="my-1 border-gray-100" />
-                    <p onClick={logout} className="hover:bg-red-50 hover:text-red-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">🚪 Logout</p>
+
+              {/* Profile dropdown - hover only on avatar/caret */}
+              <div className="relative group">
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <img
+                    className="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                    src={(userData.image && userData.image.length > 500) ? assets.profile_pic : (userData.image || assets.profile_pic)}
+                    alt="Profile"
+                  />
+                  <img className="w-2.5" src={assets.dropdown_icon} alt="" />
+                </div>
+                <div className="absolute right-0 top-full pt-4 z-50 hidden group-hover:block">
+                  <div className="min-w-48 bg-white border rounded-xl shadow-2xl overflow-hidden">
+                    <div className="bg-gray-50 px-4 py-3 border-b">
+                      <p className="font-bold text-gray-800">{userData.name}</p>
+                      <p className="text-xs text-gray-500">🪙 {userCoins} coins</p>
+                    </div>
+                    <div className="p-2 flex flex-col text-sm text-gray-600">
+                      <p onClick={() => navigate('my-profile')} className="hover:bg-blue-50 hover:text-blue-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">👤 My Profile</p>
+                      <p onClick={() => navigate('/my-appointments')} className="hover:bg-blue-50 hover:text-blue-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">📅 My Appointments</p>
+                      <hr className="my-1 border-gray-100" />
+                      <p onClick={logout} className="hover:bg-red-50 hover:text-red-600 cursor-pointer px-3 py-2 rounded-lg flex items-center gap-2">🚪 Logout</p>
+                    </div>
                   </div>
                 </div>
               </div>
