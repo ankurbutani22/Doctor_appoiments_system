@@ -47,16 +47,20 @@ const Doctors = () => {
           {filteredDoc.map((item, index) => (
             <div
               onClick={() => navigate(`/appointment/${item._id}`)}
-              className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2.5 transition-all duration-500 shadow-lg"
+              className="flex flex-col h-full border border-blue-200 rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-2.5 transition-all duration-500 shadow-lg bg-white"
               key={index}
             >
-              <img className='bg-blue-50 w-full h-48 object-cover' src={item.image} alt={item.name} />
-              <div className='p-4 '>
-                <div className='flex items-center gap-2 text-sm text-center text-green-500 '>
-                  <p className='w-2 h-2 bg-green-500 rounded-full '></p><p>Availlable</p>
+              {/* Fixed-size image area so all cards look uniform */}
+              <div className='w-full h-64 bg-blue-50 flex items-center justify-center overflow-hidden'>
+                <img className='w-full h-full object-contain' src={item.image} alt={item.name} />
+              </div>
+              <div className='p-4 flex flex-col gap-1 min-h-[96px]'>
+                <div className='flex items-center gap-2 text-sm text-green-500'>
+                  <span className='w-2 h-2 bg-green-500 rounded-full'></span>
+                  <span>Available</span>
                 </div>
-                <p className='text-gray-900 text-lg font-medium'>{item.name}</p>
-                <p className='text-gray-600 text-sm '>{item.speciality}</p>
+                <p className='text-gray-900 text-base font-semibold leading-snug'>{item.name}</p>
+                <p className='text-gray-600 text-sm'>{item.speciality}</p>
               </div>
             </div>
           ))}
