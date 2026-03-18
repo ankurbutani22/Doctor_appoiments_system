@@ -255,7 +255,7 @@ const Appoinments = () => {
                                         type='button'
                                         onClick={() => setSlotIndex(index)}
                                         key={index}
-                                        className={`text-center px-3 py-3 rounded-2xl min-w-[3.5rem] text-xs font-medium border transition-all ${slotIndex === index ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'border-slate-200 text-slate-600 bg-slate-50 hover:bg-slate-100'}`}
+                                        className={`text-center px-3 py-3 rounded-2xl min-w-3.5rem text-xs font-medium border transition-all ${slotIndex === index ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'border-slate-200 text-slate-600 bg-slate-50 hover:bg-slate-100'}`}
                                     >
                                         <p>{item[0] && daysofweek[item[0].datetime.getDay()]}</p>
                                         <p className='mt-0.5 text-base'>{item[0] && item[0].datetime.getDate()}</p>

@@ -191,8 +191,12 @@ const Navbar = () => {
                     onClick={() => {
                       const next = !showNotifications
                       setShowNotifications(next)
-                      if (next && notifications.length > 0) {
-                        markNotificationsRead()
+                      if (next) {
+                        // When opening the dropdown, always refresh notifications
+                        fetchNotifications()
+                        if (notifications.length > 0) {
+                          markNotificationsRead()
+                        }
                       }
                     }}
                     className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50"
@@ -302,10 +306,14 @@ const Navbar = () => {
                 onClick={() => {
                   const next = !showNotifications
                   setShowNotifications(next)
-                  if (next && notifications.length > 0) {
-                    // mark as read in backend but keep them visible locally
-                    // so user can see them in this open dropdown
-                    markNotificationsRead()
+                  if (next) {
+                    // On mobile, refresh notifications whenever bell is opened
+                    fetchNotifications()
+                    if (notifications.length > 0) {
+                      // mark as read in backend but keep them visible locally
+                      // so user can see them in this open dropdown
+                      markNotificationsRead()
+                    }
                   }
                 }}
                 className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 mr-1"
