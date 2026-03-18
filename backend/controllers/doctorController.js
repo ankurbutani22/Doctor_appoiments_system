@@ -180,7 +180,8 @@ const appointmentCancel = async (req, res) => {
 // API for uploading or updating an appointment report (PDF)
 const uploadReport = async (req, res) => {
     try {
-        const { docId, appointmentId } = req.body
+        const { appointmentId } = req.body
+        const docId = req.docId || req.body.docId
         const file = req.file
 
         if (!file) {
