@@ -353,6 +353,49 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* ══════════════════════════════════════════
+          MOBILE — notifications overlay (dropdown)
+      ══════════════════════════════════════════ */}
+      {(token || dToken) && showNotifications && (
+        <div
+          className="md:hidden fixed inset-0 z-60 bg-black/20"
+          onClick={() => setShowNotifications(false)}
+        >
+          <div
+            className="absolute top-20 right-3 left-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-white border rounded-2xl shadow-2xl text-xs max-h-72 overflow-hidden">
+              <div className="px-3 py-2 border-b font-semibold text-gray-700 flex items-center justify-between">
+                <span>Notifications</span>
+                {unreadCount > 0 && (
+                  <span className="text-[10px] text-gray-400">{unreadCount} new</span>
+                )}
+                <button
+                  type="button"
+                  className="ml-2 text-gray-400 hover:text-gray-600 text-xs font-bold"
+                  onClick={() => setShowNotifications(false)}
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="max-h-60 overflow-y-auto p-2">
+                {notifications.length === 0 ? (
+                  <p className="text-gray-500 text-xs px-2 py-3 text-center">No new notifications</p>
+                ) : (
+                  notifications.map((n, idx) => (
+                    <div key={idx} className="px-2 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
+                      <p className="text-xs font-medium">{n.title}</p>
+                      {n.message && <p className="text-[11px] text-gray-500 mt-0.5">{n.message}</p>}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Profile bottom sheet (mobile) ── */}
       {profileSheet && (
         <div className="md:hidden fixed inset-0 z-60 bg-black/50" onClick={() => setProfileSheet(false)}>
