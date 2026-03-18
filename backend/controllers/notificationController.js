@@ -4,8 +4,9 @@ import notificationModel from '../models/notificationModel.js'
 const getUserNotifications = async (req, res) => {
   try {
     const { userId } = req.body
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000) // last 24 hours
     const notifications = await notificationModel
-      .find({ userId, forRole: 'user', isRead: false })
+      .find({ userId, forRole: 'user', createdAt: { $gte: cutoff } })
       .sort({ createdAt: -1 })
 
     res.json({ success: true, notifications })
@@ -30,8 +31,9 @@ const markUserNotificationsRead = async (req, res) => {
 const getDoctorNotifications = async (req, res) => {
   try {
     const { docId } = req.body
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000) // last 24 hours
     const notifications = await notificationModel
-      .find({ docId, forRole: 'doctor', isRead: false })
+      .find({ docId, forRole: 'doctor', createdAt: { $gte: cutoff } })
       .sort({ createdAt: -1 })
 
     res.json({ success: true, notifications })

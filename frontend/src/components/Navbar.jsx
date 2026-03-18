@@ -119,6 +119,8 @@ const Navbar = () => {
     }
   }, [token, dToken])
 
+  const unreadCount = notifications.filter(n => !n.isRead).length
+
   /* ── nav link definitions ── */
   const desktopLinks = dToken
     ? [
@@ -196,9 +198,9 @@ const Navbar = () => {
                     className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50"
                   >
                     <span>🔔</span>
-                    {notifications.length > 0 && (
+                    {unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] leading-none px-1.5 py-0.5 rounded-full">
-                        {notifications.length}
+                        {unreadCount}
                       </span>
                     )}
                   </button>
@@ -206,8 +208,8 @@ const Navbar = () => {
                     <div className="absolute right-0 mt-2 w-64 bg-white border rounded-xl shadow-2xl z-50 text-xs">
                       <div className="px-3 py-2 border-b font-semibold text-gray-700 flex items-center justify-between">
                         <span>Notifications</span>
-                        {notifications.length > 0 && (
-                          <span className="text-[10px] text-gray-400">{notifications.length} new</span>
+                        {unreadCount > 0 && (
+                          <span className="text-[10px] text-gray-400">{unreadCount} new</span>
                         )}
                       </div>
                       <div className="max-h-64 overflow-y-auto p-2">
