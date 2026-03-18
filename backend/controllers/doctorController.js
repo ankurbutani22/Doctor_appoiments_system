@@ -181,7 +181,6 @@ const appointmentCancel = async (req, res) => {
 const uploadReport = async (req, res) => {
     try {
         const { appointmentId } = req.body
-        const docId = req.docId || req.body.docId
         const file = req.file
 
         if (!file) {
@@ -190,8 +189,8 @@ const uploadReport = async (req, res) => {
 
         const appointmentData = await appointmentModel.findById(appointmentId)
 
-        if (!appointmentData || appointmentData.docId !== docId) {
-            return res.json({ success: false, message: 'Not authorized to upload report for this appointment' })
+        if (!appointmentData) {
+            return res.json({ success: false, message: 'Appointment not found' })
         }
 
         // Upload PDF report to Cloudinary as a raw file
