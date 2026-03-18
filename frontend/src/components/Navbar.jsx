@@ -147,7 +147,7 @@ const Navbar = () => {
             <div className="flex items-center gap-3">
               {/* Coin pill - its own click target, NOT part of the profile dropdown group */}
               <div
-                className="flex items-center gap-1.5 bg-linear-to-r from-yellow-400 to-orange-500 px-3 py-1.5 rounded-full text-white font-bold text-sm shadow cursor-pointer"
+                className="relative z-50 flex items-center gap-1.5 bg-linear-to-r from-yellow-400 to-orange-500 px-3 py-1.5 rounded-full text-white font-bold text-sm shadow cursor-pointer"
                 onClick={handleOpenCoinModal}
                 title="Click to add coins"
               >
@@ -155,7 +155,7 @@ const Navbar = () => {
               </div>
 
               {/* Profile dropdown - hover only on avatar/caret */}
-              <div className="relative group">
+              <div className="relative group z-40">
                 <div className="flex items-center gap-2 cursor-pointer">
                   <img
                     className="w-10 h-10 rounded-full border-2 border-primary object-cover"
@@ -164,7 +164,7 @@ const Navbar = () => {
                   />
                   <img className="w-2.5" src={assets.dropdown_icon} alt="" />
                 </div>
-                <div className="absolute right-0 top-full pt-4 z-50 hidden group-hover:block">
+                <div className="absolute right-0 top-full pt-4 z-40 hidden group-hover:block">
                   <div className="min-w-48 bg-white border rounded-xl shadow-2xl overflow-hidden">
                     <div className="bg-gray-50 px-4 py-3 border-b">
                       <p className="font-bold text-gray-800">{userData.name}</p>
