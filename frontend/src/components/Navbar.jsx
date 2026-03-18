@@ -18,7 +18,7 @@ const Navbar = () => {
   const [coinAmount, setCoinAmount] = useState('100')
   const [addingCoins, setAddingCoins] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
-  const [notifications] = useState([])
+  const [notifications, setNotifications] = useState([])
 
   const logout = () => {
     if (token) { setToken(false); localStorage.removeItem('token') }
@@ -74,6 +74,35 @@ const Navbar = () => {
     }
   }
 
+  const fetchNotifications = async () => {
+    try {
+      if (token && !dToken) {
+        const { data } = await axios.get(backendUrl + '/api/user/notifications', { headers: { token } })
+        if (data.success) setNotifications(data.notifications || [])
+      } else if (dToken) {
+        const { data } = await axios.get(backendUrl + '/api/doctor/notifications', { headers: { dtoken: dToken } })
+        if (data.success) setNotifications(data.notifications || [])
+      } else {
+        setNotifications([])
+      }
+    } catch (error) {
+      console.log('Notification fetch error:', error.message)
+    }
+  }
+
+  const markNotificationsRead = async () => {
+    try {
+      if (token && !dToken) {
+        await axios.post(backendUrl + '/api/user/notifications/mark-read', {}, { headers: { token } })
+      } else if (dToken) {
+        await axios.post(backendUrl + '/api/doctor/notifications/mark-read', {}, { headers: { dtoken: dToken } })
+      }
+      setNotifications([])
+    } catch (error) {
+      console.log('Notification mark-read error:', error.message)
+    }
+  }
+
   // Load doctor profile data when a doctor is logged in so we can
   // show the correct profile image in the navbar.
   useEffect(() => {
@@ -81,6 +110,15 @@ const Navbar = () => {
       getProfileData()
     }
   }, [dToken, getProfileData])
+
+  // Load notifications whenever auth state changes
+  useEffect(() => {
+    if (token || dToken) {
+      fetchNotifications()
+    } else {
+      setNotifications([])
+    }
+  }, [token, dToken])
 
   /* ── nav link definitions ── */
   const desktopLinks = dToken
@@ -149,7 +187,13 @@ const Navbar = () => {
                 <div className="relative">
                   <button
                     type="button"
-                    onClick={() => setShowNotifications(prev => !prev)}
+                    onClick={() => {
+                      const next = !showNotifications
+                      setShowNotifications(next)
+                      if (next && notifications.length > 0) {
+                        markNotificationsRead()
+                      }
+                    }}
                     className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50"
                   >
                     <span>🔔</span>
@@ -254,7 +298,13 @@ const Navbar = () => {
             {(token || dToken) && (
               <button
                 type="button"
-                onClick={() => setShowNotifications(prev => !prev)}
+                onClick={() => {
+                  const next = !showNotifications
+                  setShowNotifications(next)
+                  if (next && notifications.length > 0) {
+                    markNotificationsRead()
+                  }
+                }}
                 className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 mr-1"
               >
                 <span>🔔</span>

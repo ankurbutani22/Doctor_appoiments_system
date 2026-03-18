@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import appointmentModel from "../models/appointmentModel.js"
 import fs from 'fs'
+import notificationModel from "../models/notificationModel.js"
 
 
 const changeAvailablity = async (req, res) => {
@@ -129,6 +130,18 @@ const appointmentComplete = async (req, res) => {
                 isCompleted: true,
                 prescribedMedicines: prescribedMedicines || ""
             })
+
+            // notify patient that appointment is completed
+            try {
+                await notificationModel.create({
+                    userId: appointmentData.userId,
+                    forRole: 'user',
+                    title: 'Appointment completed',
+                    message: `Your appointment with ${appointmentData.docData.name} is marked as completed.`,
+                })
+            } catch (notifyErr) {
+                console.log('Notification error (appointment complete):', notifyErr.message)
+            }
             res.json({ success: true, message: 'Appointment Completed' })
         } else {
             res.json({ success: false, message: 'Mark Failed' })
@@ -149,6 +162,18 @@ const prescribeMedicines = async (req, res) => {
             await appointmentModel.findByIdAndUpdate(appointmentId, {
                 prescribedMedicines: prescribedMedicines || ""
             })
+
+            // notify patient about new/updated prescription
+            try {
+                await notificationModel.create({
+                    userId: appointmentData.userId,
+                    forRole: 'user',
+                    title: 'Prescription updated',
+                    message: `New medicines have been prescribed for your appointment with ${appointmentData.docData.name}.`,
+                })
+            } catch (notifyErr) {
+                console.log('Notification error (prescribe medicines):', notifyErr.message)
+            }
             res.json({ success: true, message: 'Medicines Prescribed Successfully' })
         } else {
             res.json({ success: false, message: 'Failed to prescribe medicines' })
@@ -203,6 +228,18 @@ const uploadReport = async (req, res) => {
             // reportUrl now just indicates presence
             reportUrl: 'local'
         })
+
+        // notify patient that a new report is available
+        try {
+            await notificationModel.create({
+                userId: appointmentData.userId,
+                forRole: 'user',
+                title: 'New report uploaded',
+                message: `A new report has been uploaded for your appointment with ${appointmentData.docData.name}.`,
+            })
+        } catch (notifyErr) {
+            console.log('Notification error (upload report):', notifyErr.message)
+        }
 
         res.json({ success: true, message: 'Report uploaded successfully' })
     } catch (error) {

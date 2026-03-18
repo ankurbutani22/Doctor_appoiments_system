@@ -1,5 +1,6 @@
 import express from 'express'
 import { doctorList, loginDoctor, appointmentsDoctor, doctorDashboard, appointmentCancel, doctorProfile, updateDoctorProfile, appointmentComplete, prescribeMedicines, uploadReport, deleteReport, downloadReportDoctor } from "../controllers/doctorController.js"
+import { getDoctorNotifications, markDoctorNotificationsRead } from "../controllers/notificationController.js"
 import authDoctor from "../middlewares/authDoctor.js"
 import uplod from "../middlewares/multer.js"
 
@@ -16,6 +17,8 @@ doctorRouter.post('/cancel-appointment', authDoctor, appointmentCancel)
 doctorRouter.post('/upload-report', authDoctor, uplod.single('report'), uploadReport)
 doctorRouter.get('/report/:appointmentId', downloadReportDoctor)
 doctorRouter.post('/delete-report', authDoctor, deleteReport)
+doctorRouter.get('/notifications', authDoctor, getDoctorNotifications)
+doctorRouter.post('/notifications/mark-read', authDoctor, markDoctorNotificationsRead)
 
 
 export default doctorRouter

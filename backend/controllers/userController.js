@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import { v2 as cloudinary } from 'cloudinary'
 import doctorModel from '../models/doctorModel.js'
 import appointmentModel from '../models/appointmentModel.js'
+import notificationModel from '../models/notificationModel.js'
 import Razorpay from 'razorpay'
 
 
@@ -174,11 +175,24 @@ const bookAppointment = async (req, res) => {
             date: Date.now()
         }
         const newAppointment = new appointmentModel(appointmentData)
-        await newAppointment.save()
+        const savedAppointment = await newAppointment.save()
 
         //save new slots data in doctor collection
         await doctorModel.findByIdAndUpdate(docId, { slots_booked })
-        res.json({ success: true, message: "Appointment booked successfully" })
+
+        // create notification for doctor - new appointment
+        try {
+            await notificationModel.create({
+                docId,
+                forRole: 'doctor',
+                title: 'New appointment booked',
+                message: `${userData.name} booked an appointment on ${slotDate} at ${slotTime}`,
+            })
+        } catch (notifyErr) {
+            console.log('Notification error (doctor new appointment):', notifyErr.message)
+        }
+
+        res.json({ success: true, message: "Appointment booked successfully", appointmentId: savedAppointment._id })
 
     } catch (error) {
         console.log(error)
