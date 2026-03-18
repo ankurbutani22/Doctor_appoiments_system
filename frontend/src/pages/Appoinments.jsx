@@ -200,7 +200,7 @@ const Appoinments = () => {
                 <div>
                     <img className='bg-blue-600 w-full sm:max-w-72 rounded-lg' src={docInfo.image} alt={docInfo.name} />
                 </div> 
-                <div className='flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0'>
+                <div className='flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-80px sm:mt-0'>
                     <p className='flex items-center gap-2 text-2xl font-medium text-gray-900'>
                         {docInfo.name} 
                         <img className='w-5' src={assets.verified_icon} alt="Verified" />
@@ -234,7 +234,7 @@ const Appoinments = () => {
                 
                 <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
                     {docSlots.length > 0 && docSlots[slotIndex].map((item, index) => (
-                        <p onClick={() => setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-blue-600 text-white' : 'text-gray-400 border border-gray-300'}`} key={index}>
+                        <p onClick={() => setSlotTime(item.time)} className={`text-sm font-light shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-blue-600 text-white' : 'text-gray-400 border border-gray-300'}`} key={index}>
                             {item.time.toLowerCase()} 
                         </p>
                     ))}

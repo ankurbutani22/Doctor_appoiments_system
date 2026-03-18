@@ -54,7 +54,7 @@ const Doctors = () => {
               <div className='w-full h-64 bg-blue-50 flex items-center justify-center overflow-hidden'>
                 <img className='w-full h-full object-contain' src={item.image} alt={item.name} />
               </div>
-              <div className='p-4 flex flex-col gap-1 min-h-[96px]'>
+              <div className='p-4 flex flex-col gap-1 min-h-96px'>
                 <div className='flex items-center gap-2 text-sm text-green-500'>
                   <span className='w-2 h-2 bg-green-500 rounded-full'></span>
                   <span>Available</span>
