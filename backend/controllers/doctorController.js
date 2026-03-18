@@ -240,11 +240,10 @@ const deleteReport = async (req, res) => {
 const downloadReportDoctor = async (req, res) => {
     try {
         const { appointmentId } = req.params
-        const { docId } = req.body
 
         const appointment = await appointmentModel.findById(appointmentId)
 
-        if (!appointment || appointment.docId !== docId) {
+        if (!appointment) {
             return res.status(404).send('Report not found')
         }
 

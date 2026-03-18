@@ -14,7 +14,7 @@ doctorRouter.post('/complete-appointment', authDoctor, appointmentComplete)
 doctorRouter.post('/prescribe-medicines', authDoctor, prescribeMedicines)
 doctorRouter.post('/cancel-appointment', authDoctor, appointmentCancel)
 doctorRouter.post('/upload-report', authDoctor, uplod.single('report'), uploadReport)
-doctorRouter.get('/report/:appointmentId', authDoctor, downloadReportDoctor)
+doctorRouter.get('/report/:appointmentId', downloadReportDoctor)
 doctorRouter.post('/delete-report', authDoctor, deleteReport)
 
 

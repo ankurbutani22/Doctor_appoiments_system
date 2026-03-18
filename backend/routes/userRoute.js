@@ -14,7 +14,7 @@ userRouter.post('/update-profile', uplod.single('image'), authUser, updateProfil
 userRouter.post('/update-profile', uplod.single('image'), authUser, updateProfile)
 userRouter.post('/book-appointment', authUser, bookAppointment)
 userRouter.get('/appointments', authUser, listAppointments)
-userRouter.get('/report/:appointmentId', authUser, downloadReportUser)
+userRouter.get('/report/:appointmentId', downloadReportUser)
 userRouter.post('/cancel-appointment', authUser, cancelAppointment)
 userRouter.post('/payment-razorpay', authUser, paymentRazorpay)
 userRouter.post('/verifyRazorpay', authUser, verifyRazorpay)

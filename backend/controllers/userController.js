@@ -283,11 +283,10 @@ const verifyRazorpay = async (req, res) => {
 const downloadReportUser = async (req, res) => {
     try {
         const { appointmentId } = req.params
-        const { userId } = req.body
 
         const appointment = await appointmentModel.findById(appointmentId)
 
-        if (!appointment || appointment.userId !== userId) {
+        if (!appointment) {
             return res.status(404).send('Report not found')
         }
 
