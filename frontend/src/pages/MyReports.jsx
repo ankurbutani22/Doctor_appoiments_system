@@ -92,16 +92,15 @@ const MyReports = () => {
                 </p>
               </div>
 
-              {/* Report link */}
+              {/* Report link (download) */}
               <div className="w-full text-right text-xs">
                 <a
                   href={item.reportUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  download
                   className="inline-flex items-center justify-end gap-1 text-emerald-600 hover:text-emerald-700"
                 >
-                  <span>View Report (PDF)</span>
-                  <span>↗</span>
+                  <span>Download Report (PDF)</span>
+                  <span>⬇</span>
                 </a>
               </div>
             </div>
