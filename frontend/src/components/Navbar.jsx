@@ -97,7 +97,6 @@ const Navbar = () => {
       } else if (dToken) {
         await axios.post(backendUrl + '/api/doctor/notifications/mark-read', {}, { headers: { dtoken: dToken } })
       }
-      setNotifications([])
     } catch (error) {
       console.log('Notification mark-read error:', error.message)
     }
@@ -302,6 +301,8 @@ const Navbar = () => {
                   const next = !showNotifications
                   setShowNotifications(next)
                   if (next && notifications.length > 0) {
+                    // mark as read in backend but keep them visible locally
+                    // so user can see them in this open dropdown
                     markNotificationsRead()
                   }
                 }}
