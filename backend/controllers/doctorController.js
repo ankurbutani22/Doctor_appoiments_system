@@ -193,9 +193,10 @@ const uploadReport = async (req, res) => {
             return res.json({ success: false, message: 'Appointment not found' })
         }
 
-        // Upload PDF report to Cloudinary as a raw file
+        // Upload PDF report to Cloudinary in a browser-friendly way
+        // Let Cloudinary auto-detect the correct resource type for the PDF
         const uploadResult = await cloudinary.uploader.upload(file.path, {
-            resource_type: 'raw'
+            resource_type: 'auto',
         })
 
         await appointmentModel.findByIdAndUpdate(appointmentId, {
