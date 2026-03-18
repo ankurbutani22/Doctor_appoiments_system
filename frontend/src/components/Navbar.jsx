@@ -52,8 +52,8 @@ const Navbar = () => {
       ...(token ? [
         { to: '/my-appointments', label: 'APPOINTMENTS' },
         { to: '/my-medicines', label: 'MEDICINES' },
+        { to: '/my-reports', label: 'REPORTS' },
       ] : []),
-      { to: '/about', label: 'ABOUT' },
       { to: '/Contect', label: 'CONTACT' },
     ]
 
@@ -71,12 +71,12 @@ const Navbar = () => {
         { to: '/doctors', label: 'Doctors', icon: '🩺' },
         { to: '/my-appointments', label: 'Appointments', icon: '📅' },
         { to: '/my-medicines', label: 'Medicines', icon: '💊' },
+        { to: '/my-reports', label: 'Reports', icon: '📄' },
         { to: '/my-profile', label: 'Profile', icon: '👤' },
       ]
       : [
         { to: '/', label: 'Home', icon: '🏠' },
         { to: '/doctors', label: 'Doctors', icon: '🩺' },
-        { to: '/about', label: 'About', icon: 'ℹ️' },
         { to: '/Login', label: 'Login', icon: '🔑' },
       ]
 

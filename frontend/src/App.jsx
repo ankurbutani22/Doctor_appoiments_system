@@ -13,6 +13,7 @@ import DoctorAppointments from './pages/DoctorAppointments'
 import DoctorProfile from './pages/DoctorProfile'
 import MyMedicines from './pages/MyMedicines'
 import DoctorMedicines from './pages/DoctorMedicines'
+import MyReports from './pages/MyReports'
 import DoctorReports from './pages/DoctorReports'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -65,6 +66,7 @@ const App = () => {
           <Route path='/Contect' element={<Contect />} />
           <Route path='/my-profile' element={<Myprofile />} />
           <Route path='/my-appointments' element={<MyAppointments />} />
+          <Route path='/my-reports' element={<MyReports />} />
           <Route path='/appointment/:docId' element={<Appoinments />} />
           <Route path='/my-medicines' element={<MyMedicines />} />
 
