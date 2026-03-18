@@ -235,18 +235,17 @@ const rateDoctor = async (req, res) => {
             return res.json({ success: false, message: 'Doctor not found' })
         }
 
-        // User must have at least one completed appointment with this doctor
-        const completedAppointment = await appointmentModel.findOne({
+        // User must have at least one non-cancelled appointment with this doctor
+        const anyAppointment = await appointmentModel.findOne({
             userId,
             docId,
-            isCompleted: true,
             cancelled: { $ne: true }
         })
 
-        if (!completedAppointment) {
+        if (!anyAppointment) {
             return res.json({
                 success: false,
-                message: 'You can rate this doctor only after a completed appointment.'
+                message: 'You can rate this doctor only after booking an appointment.'
             })
         }
 
