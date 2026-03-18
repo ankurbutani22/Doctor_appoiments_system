@@ -113,6 +113,24 @@ const DoctorContextProvider = (props) => {
         }
     }
 
+    const viewReport = async (appointmentId) => {
+        try {
+            const response = await axios.get(backendUrl + `/api/doctor/report/${appointmentId}`,
+                {
+                    headers: { dToken },
+                    responseType: 'blob'
+                })
+
+            const contentType = response.headers['content-type'] || 'application/pdf'
+            const blob = new Blob([response.data], { type: contentType })
+            const url = window.URL.createObjectURL(blob)
+            window.open(url, '_blank')
+        } catch (error) {
+            console.log(error)
+            toast.error('Failed to open report')
+        }
+    }
+
     const uploadReport = async (appointmentId, file) => {
         try {
             const formData = new FormData()
@@ -167,7 +185,8 @@ const DoctorContextProvider = (props) => {
         profileData, setProfileData, getProfileData,
         loadingProfile,
         completeAppointment, cancelAppointment, prescribeMedicines,
-        uploadReport, deleteReport
+        uploadReport, deleteReport,
+        viewReport
     }
 
     return (

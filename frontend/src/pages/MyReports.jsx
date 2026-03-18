@@ -48,6 +48,24 @@ const MyReports = () => {
     return <PageLoader label="Loading your reports..." variant="appointments" />
   }
 
+  const viewReport = async (appointmentId) => {
+    try {
+      const response = await axios.get(backendUrl + `/api/user/report/${appointmentId}`,
+        {
+          headers: { token },
+          responseType: 'blob'
+        })
+
+      const contentType = response.headers['content-type'] || 'application/pdf'
+      const blob = new Blob([response.data], { type: contentType })
+      const url = window.URL.createObjectURL(blob)
+      window.open(url, '_blank')
+    } catch (error) {
+      console.log(error)
+      toast.error('Failed to open report')
+    }
+  }
+
   return (
     <div className="mt-6 md:mt-10">
       <h1 className="text-xl md:text-2xl font-semibold text-gray-800 mb-1">My Reports</h1>
@@ -94,15 +112,14 @@ const MyReports = () => {
 
               {/* Report link (view via backend) */}
               <div className="w-full text-right text-xs">
-                <a
-                  href={`${backendUrl}/api/user/report/${item._id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => viewReport(item._id)}
                   className="inline-flex items-center justify-end gap-1 text-emerald-600 hover:text-emerald-700"
                 >
                   <span>View Report (PDF)</span>
                   <span>↗</span>
-                </a>
+                </button>
               </div>
             </div>
           ))}

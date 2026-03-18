@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import PageLoader from '../components/PageLoader'
 
 const DoctorReports = () => {
-  const { dToken, appointments, getAppointments, loadingAppointments, uploadReport, deleteReport, backendUrl } = useContext(DoctorContext)
+  const { dToken, appointments, getAppointments, loadingAppointments, uploadReport, deleteReport, viewReport } = useContext(DoctorContext)
   const { slotDateFormat } = useContext(AppContext)
 
   const [files, setFiles] = useState({})
@@ -106,15 +106,14 @@ const DoctorReports = () => {
               <div className="w-full flex md:justify-end gap-2 text-xs">
                 {item.reportUrl ? (
                   <>
-                    <a
-                      href={`${backendUrl}/api/doctor/report/${item._id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      type="button"
+                      onClick={() => viewReport(item._id)}
                       className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-full border border-emerald-500 text-emerald-600 hover:bg-emerald-50"
                     >
                       <span>View</span>
                       <span>↗</span>
-                    </a>
+                    </button>
                     <button
                       onClick={() => deleteReport(item._id)}
                       className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-full border border-red-400 text-red-500 hover:bg-red-50"

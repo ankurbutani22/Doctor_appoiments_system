@@ -41,6 +41,24 @@ const MyAppointments = () => {
     }
   }
 
+  const viewReport = async (appointmentId) => {
+    try {
+      const response = await axios.get(backendUrl + `/api/user/report/${appointmentId}`,
+        {
+          headers: { token },
+          responseType: 'blob'
+        })
+
+      const contentType = response.headers['content-type'] || 'application/pdf'
+      const blob = new Blob([response.data], { type: contentType })
+      const url = window.URL.createObjectURL(blob)
+      window.open(url, '_blank')
+    } catch (error) {
+      console.log(error)
+      toast.error('Failed to open report')
+    }
+  }
+
   const cancelAppointment = async (appointmentId) => {
     try {
       const { data } = await axios.post(backendUrl + '/api/user/cancel-appointment', { appointmentId }, { headers: { token } })
@@ -187,14 +205,13 @@ const MyAppointments = () => {
               {item.cancelled && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
 
               {item.isCompleted && item.reportUrl && !item.cancelled && (
-                <a
-                  href={`${backendUrl}/api/user/report/${item._id}`}
-                  target='_blank'
-                  rel='noopener noreferrer'
+                <button
+                  type='button'
+                  onClick={() => viewReport(item._id)}
                   className='sm:min-w-48 py-2 border border-emerald-500 rounded text-emerald-600 text-sm text-center hover:bg-emerald-50 transition-all'
                 >
                   View Report (PDF)
-                </a>
+                </button>
               )}
 
             </div>
