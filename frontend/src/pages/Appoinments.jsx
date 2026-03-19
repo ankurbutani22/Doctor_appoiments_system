@@ -247,45 +247,53 @@ const Appoinments = () => {
                         <p className='font-semibold text-slate-900 text-base sm:text-lg'>Book an appointment</p>
                         <p className='text-xs text-slate-500 mt-1'>Select a day and time slot that works best for you.</p>
 
-                        <div className='mt-5'>
-                            <p className='text-xs font-medium text-slate-500 uppercase tracking-wide mb-2'>Days</p>
-                            <div className='flex gap-3 items-center w-full overflow-x-auto pb-1'>
-                                {docSlots.length > 0 && docSlots.map((item, index) => (
-                                    <button
-                                        type='button'
-                                        onClick={() => setSlotIndex(index)}
-                                        key={index}
-                                        className={`text-center px-3 py-3 rounded-2xl min-w-3.5rem text-xs font-medium border transition-all ${slotIndex === index ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'border-slate-200 text-slate-600 bg-slate-50 hover:bg-slate-100'}`}
-                                    >
-                                        <p>{item[0] && daysofweek[item[0].datetime.getDay()]}</p>
-                                        <p className='mt-0.5 text-base'>{item[0] && item[0].datetime.getDate()}</p>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                        {docSlots.length > 0 ? (
+                            <>
+                                <div className='mt-5'>
+                                    <p className='text-xs font-medium text-slate-500 uppercase tracking-wide mb-2'>Days</p>
+                                    <div className='flex gap-3 items-center w-full overflow-x-auto pb-1'>
+                                        {docSlots.map((item, index) => (
+                                            <button
+                                                type='button'
+                                                onClick={() => setSlotIndex(index)}
+                                                key={index}
+                                                className={`text-center px-3 py-3 rounded-2xl min-w-3.5rem text-xs font-medium border transition-all ${slotIndex === index ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'border-slate-200 text-slate-600 bg-slate-50 hover:bg-slate-100'}`}
+                                            >
+                                                <p>{item[0] && daysofweek[item[0].datetime.getDay()]}</p>
+                                                <p className='mt-0.5 text-base'>{item[0] && item[0].datetime.getDate()}</p>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
 
-                        <div className='mt-5'>
-                            <p className='text-xs font-medium text-slate-500 uppercase tracking-wide mb-2'>Time slots</p>
-                            <div className='flex items-center gap-3 w-full overflow-x-auto pb-1'>
-                                {docSlots.length > 0 && docSlots[slotIndex].map((item, index) => (
-                                    <button
-                                        type='button'
-                                        onClick={() => setSlotTime(item.time)}
-                                        className={`text-xs sm:text-sm font-normal shrink-0 px-4 py-2 rounded-full border transition-all ${item.time === slotTime ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'text-slate-500 border-slate-200 bg-slate-50 hover:bg-slate-100'}`}
-                                        key={index}
-                                    >
-                                        {item.time.toLowerCase()}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                                <div className='mt-5'>
+                                    <p className='text-xs font-medium text-slate-500 uppercase tracking-wide mb-2'>Time slots</p>
+                                    <div className='flex items-center gap-3 w-full overflow-x-auto pb-1'>
+                                        {docSlots[slotIndex].map((item, index) => (
+                                            <button
+                                                type='button'
+                                                onClick={() => setSlotTime(item.time)}
+                                                className={`text-xs sm:text-sm font-normal shrink-0 px-4 py-2 rounded-full border transition-all ${item.time === slotTime ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'text-slate-500 border-slate-200 bg-slate-50 hover:bg-slate-100'}`}
+                                                key={index}
+                                            >
+                                                {item.time.toLowerCase()}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
 
-                        <button
-                            onClick={bookAppointment}
-                            className='mt-6 inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-8 py-2.5 rounded-full shadow-sm transition-colors'
-                        >
-                            Confirm booking
-                        </button>
+                                <button
+                                    onClick={bookAppointment}
+                                    className='mt-6 inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-8 py-2.5 rounded-full shadow-sm transition-colors'
+                                >
+                                    Confirm booking
+                                </button>
+                            </>
+                        ) : (
+                            <div className='mt-6 p-4 rounded-2xl bg-slate-50 border border-dashed border-slate-200 text-sm text-slate-500 text-center'>
+                                This doctor currently has no available time slots. Please check again later.
+                            </div>
+                        )}
                     </div>
 
                     {/* Rating section */}
