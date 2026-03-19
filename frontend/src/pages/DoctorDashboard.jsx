@@ -34,7 +34,11 @@ const DoctorDashboard = () => {
         return <PageLoader label="Loading dashboard..." variant="dashboard" />
     }
 
-    return dashData && (
+    if (!dashData) {
+        return null
+    }
+
+    return (
         <div className='bg-slate-50 min-h-[calc(100vh-80px)] py-6 sm:py-8'>
             <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
             {showModal && (
@@ -54,7 +58,7 @@ const DoctorDashboard = () => {
                     {/* Profile card */}
                     <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 flex flex-col gap-4'>
                         <div className='flex items-center gap-4'>
-                            <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-sky-400 flex items-center justify-center overflow-hidden shadow-sm'>
+                            <div className='w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 via-indigo-500 to-sky-400 flex items-center justify-center overflow-hidden shadow-sm'>
                                 {profileData?.image
                                     ? <img src={profileData.image} alt='Doctor avatar' className='w-full h-full object-cover' />
                                     : <span className='text-xl font-semibold text-white'>{profileData?.name?.[0] || 'D'}</span>
@@ -200,7 +204,9 @@ const DoctorDashboard = () => {
                 </div>
             </div>
             </div>
+        </div>
     )
 }
+
 
 export default DoctorDashboard
