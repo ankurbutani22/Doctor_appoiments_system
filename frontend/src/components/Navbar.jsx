@@ -23,6 +23,7 @@ const Navbar = () => {
   const logout = () => {
     if (token) { setToken(false); localStorage.removeItem('token') }
     if (dToken) { setDToken(false); localStorage.removeItem('dToken') }
+    setShowNotifications(false)
     navigate('/Login')
     setProfileSheet(false)
   }
@@ -362,11 +363,11 @@ const Navbar = () => {
         </div>
 
         {/* ══════════════════════════════════════════
-            MOBILE — notifications overlay (dropdown)
+            GLOBAL — notifications overlay (all sizes)
         ══════════════════════════════════════════ */}
         {(token || dToken) && showNotifications && (
           <div
-            className="md:hidden fixed inset-0 z-60 bg-black/20"
+            className="fixed inset-0 z-70 bg-black/20"
             onClick={() => setShowNotifications(false)}
           >
             <div
