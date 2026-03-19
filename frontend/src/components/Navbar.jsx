@@ -384,7 +384,7 @@ const Navbar = () => {
 
       {/* ── Profile bottom sheet (mobile) ── */}
       {profileSheet && (
-          <div className="md:hidden fixed inset-0 z-[60] bg-black/50" onClick={() => setProfileSheet(false)}>
+          <div className="md:hidden fixed inset-0 z-60 bg-black/50" onClick={() => setProfileSheet(false)}>
           <div
             className="fixed bottom-[72px] left-3 right-3 bg-white rounded-3xl shadow-2xl overflow-hidden animate-slide-up"
             onClick={e => e.stopPropagation()}
@@ -469,7 +469,7 @@ const Navbar = () => {
       {/* ── Add Coins Modal ── */}
       {showCoinModal && token && !dToken && (
         <div
-          className="fixed inset-0 z-[70] bg-black/50 flex items-center justify-center px-4"
+          className="fixed inset-0 z-70 bg-black/50 flex items-center justify-center px-4"
           onClick={() => !addingCoins && setShowCoinModal(false)}
         >
           <div
