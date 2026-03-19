@@ -55,8 +55,8 @@ const DoctorDashboard = () => {
             <div className='grid grid-cols-1 lg:grid-cols-[1.05fr,1.8fr] gap-6 items-start'>
                 {/* Left column: doctor profile + key metrics */}
                 <div className='space-y-5'>
-                    {/* Profile card */}
-                    <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 flex flex-col gap-4'>
+                    {/* Profile + KPIs card */}
+                    <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 flex flex-col gap-5'>
                         <div className='flex items-center gap-4'>
                             <div className='w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 via-indigo-500 to-sky-400 flex items-center justify-center overflow-hidden shadow-sm'>
                                 {profileData?.image
@@ -76,20 +76,32 @@ const DoctorDashboard = () => {
                         </div>
 
                         <div className='grid grid-cols-2 gap-3 mt-2 text-sm'>
-                            <div className='rounded-xl border border-blue-50 bg-blue-50/60 px-3 py-2 flex flex-col gap-0.5'>
-                                <span className='text-[11px] uppercase tracking-wide text-blue-500'>Earnings</span>
+                            <div className='rounded-2xl border border-blue-100 bg-blue-50/70 px-3 py-2.5 flex flex-col gap-1 shadow-[0_6px_12px_rgba(37,99,235,0.08)]'>
+                                <div className='flex items-center justify-between text-[11px] uppercase tracking-wide text-blue-600'>
+                                    <span>Earnings</span>
+                                    <img src={assets.earning_icon} alt="Earnings" className='w-4 h-4' />
+                                </div>
                                 <span className='text-lg font-semibold text-slate-900'>₹ {dashData.earnings}</span>
                             </div>
-                            <div className='rounded-xl border border-emerald-50 bg-emerald-50/60 px-3 py-2 flex flex-col gap-0.5'>
-                                <span className='text-[11px] uppercase tracking-wide text-emerald-500'>Patients</span>
+                            <div className='rounded-2xl border border-emerald-100 bg-emerald-50/70 px-3 py-2.5 flex flex-col gap-1 shadow-[0_6px_12px_rgba(16,185,129,0.08)]'>
+                                <div className='flex items-center justify-between text-[11px] uppercase tracking-wide text-emerald-600'>
+                                    <span>Patients</span>
+                                    <img src={assets.patients_icon} alt="Patients" className='w-4 h-4' />
+                                </div>
                                 <span className='text-lg font-semibold text-slate-900'>{dashData.patients}</span>
                             </div>
-                            <div className='rounded-xl border border-indigo-50 bg-indigo-50/60 px-3 py-2 flex flex-col gap-0.5'>
-                                <span className='text-[11px] uppercase tracking-wide text-indigo-500'>Appointments</span>
+                            <div className='rounded-2xl border border-indigo-100 bg-indigo-50/70 px-3 py-2.5 flex flex-col gap-1 shadow-[0_6px_12px_rgba(79,70,229,0.08)]'>
+                                <div className='flex items-center justify-between text-[11px] uppercase tracking-wide text-indigo-600'>
+                                    <span>Appointments</span>
+                                    <img src={assets.appointments_icon} alt="Appointments" className='w-4 h-4' />
+                                </div>
                                 <span className='text-lg font-semibold text-slate-900'>{dashData.appointments}</span>
                             </div>
-                            <div className='rounded-xl border border-amber-50 bg-amber-50/60 px-3 py-2 flex flex-col gap-0.5'>
-                                <span className='text-[11px] uppercase tracking-wide text-amber-500'>Rating</span>
+                            <div className='rounded-2xl border border-amber-100 bg-amber-50/70 px-3 py-2.5 flex flex-col gap-1 shadow-[0_6px_12px_rgba(245,158,11,0.10)]'>
+                                <div className='flex items-center justify-between text-[11px] uppercase tracking-wide text-amber-600'>
+                                    <span>Rating</span>
+                                    <span className='text-xs'>★</span>
+                                </div>
                                 <span className='text-lg font-semibold text-slate-900'>
                                     {ratingSummary?.ratingCount ? ratingSummary.averageRating?.toFixed(1) : '--'}
                                 </span>
