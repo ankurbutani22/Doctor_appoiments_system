@@ -39,7 +39,7 @@ const DoctorDashboard = () => {
     }
 
     return (
-        <div className='bg-slate-50 min-h-[calc(100vh-80px)] py-6 sm:py-8'>
+        <div className='bg-gradient-to-b from-slate-50 to-slate-100 min-h-[calc(100vh-80px)] py-6 sm:py-8'>
             <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
             {showModal && (
                 <PrescriptionModal
@@ -114,7 +114,10 @@ const DoctorDashboard = () => {
 
                     {/* Mini insight card */}
                     <div className='bg-white rounded-2xl border border-slate-100 shadow-sm p-4 text-xs text-slate-600 space-y-2'>
-                        <p className='font-semibold text-slate-800 text-sm'>Today&apos;s snapshot</p>
+                        <p className='font-semibold text-slate-800 text-sm flex items-center gap-2'>
+                            <span className='inline-block w-1.5 h-4 rounded-full bg-blue-500' />
+                            Today&apos;s snapshot
+                        </p>
                         <p>• You have <span className='font-semibold text-slate-900'>{dashData.appointments}</span> total appointments logged.</p>
                         <p>• Your average rating is <span className='font-semibold text-amber-500'>{ratingSummary?.ratingCount ? ratingSummary.averageRating?.toFixed(1) : '—'}</span>.</p>
                         <p>• Total unique patients seen: <span className='font-semibold text-emerald-600'>{dashData.patients}</span>.</p>
@@ -134,14 +137,6 @@ const DoctorDashboard = () => {
                         </div>
 
                         <div className='divide-y divide-slate-100'>
-                    <div className='flex items-center justify-between gap-2 px-5 py-4 border-b border-slate-100 bg-slate-50/60'>
-                        <div className='flex items-center gap-2'>
-                            <img src={assets.list_icon} alt="" className='w-4' />
-                            <p className='font-semibold text-slate-800 text-sm sm:text-base'>Latest Bookings</p>
-                        </div>
-                        <p className='text-xs text-slate-400'>Last {Math.min(dashData.latestAppointments.length, 5)} visits</p>
-                    </div>
-
                         {dashData.latestAppointments.map((item, index) => (
                             <div className='flex items-center px-5 py-3.5 gap-3 hover:bg-slate-50 transition-colors' key={index}>
                                 <img className='rounded-full w-10 h-10 object-cover bg-slate-100' src={item.userData.image} alt="" />
