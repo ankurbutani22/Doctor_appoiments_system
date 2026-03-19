@@ -302,30 +302,54 @@ const Navbar = () => {
         <img onClick={() => navigate('/')} className="w-32 cursor-pointer" src={assets.logo} alt="Logo" />
         <div className="flex items-center gap-2">
             {(token || dToken) && (
-              <button
-                type="button"
-                onClick={() => {
-                  const next = !showNotifications
-                  setShowNotifications(next)
-                  if (next) {
-                    // On mobile, refresh notifications whenever bell is opened
-                    fetchNotifications()
-                    if (notifications.length > 0) {
-                      // mark as read in backend but keep them visible locally
-                      // so user can see them in this open dropdown
-                      markNotificationsRead()
+              <div className="relative mr-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = !showNotifications
+                    setShowNotifications(next)
+                    if (next) {
+                      // On mobile, refresh notifications whenever bell is opened
+                      fetchNotifications()
+                      if (notifications.length > 0) {
+                        // mark as read in backend but keep them visible locally
+                        // so user can see them in this open dropdown
+                        markNotificationsRead()
+                      }
                     }
-                  }
-                }}
-                className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 mr-1"
-              >
-                <span>🔔</span>
-                {notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] leading-none px-1.5 py-0.5 rounded-full">
-                    {notifications.length}
-                  </span>
+                  }}
+                  className="relative flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50"
+                >
+                  <span>🔔</span>
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] leading-none px-1.5 py-0.5 rounded-full">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-64 bg-white border rounded-xl shadow-2xl z-50 text-xs">
+                    <div className="px-3 py-2 border-b font-semibold text-gray-700 flex items-center justify-between">
+                      <span>Notifications</span>
+                      {unreadCount > 0 && (
+                        <span className="text-[10px] text-gray-400">{unreadCount} new</span>
+                      )}
+                    </div>
+                    <div className="max-h-64 overflow-y-auto p-2">
+                      {notifications.length === 0 ? (
+                        <p className="text-gray-500 text-xs px-2 py-3 text-center">No new notifications</p>
+                      ) : (
+                        notifications.map((n, idx) => (
+                          <div key={idx} className="px-2 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
+                            <p className="text-xs font-medium">{n.title}</p>
+                            {n.message && <p className="text-[11px] text-gray-500 mt-0.5">{n.message}</p>}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
                 )}
-              </button>
+              </div>
             )}
           {(token && userData) && (
             <span
@@ -361,49 +385,6 @@ const Navbar = () => {
           )}
         </div>
         </div>
-
-        {/* ══════════════════════════════════════════
-            GLOBAL — notifications overlay (all sizes)
-        ══════════════════════════════════════════ */}
-        {(token || dToken) && showNotifications && (
-          <div
-            className="fixed inset-0 z-70 bg-black/20"
-            onClick={() => setShowNotifications(false)}
-          >
-            <div
-              className="absolute top-20 right-3 left-3"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="bg-white border rounded-2xl shadow-2xl text-xs max-h-72 overflow-hidden">
-                <div className="px-3 py-2 border-b font-semibold text-gray-700 flex items-center justify-between">
-                  <span>Notifications</span>
-                  {unreadCount > 0 && (
-                    <span className="text-[10px] text-gray-400">{unreadCount} new</span>
-                  )}
-                  <button
-                    type="button"
-                    className="ml-2 text-gray-400 hover:text-gray-600 text-xs font-bold"
-                    onClick={() => setShowNotifications(false)}
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div className="max-h-60 overflow-y-auto p-2">
-                  {notifications.length === 0 ? (
-                    <p className="text-gray-500 text-xs px-2 py-3 text-center">No new notifications</p>
-                  ) : (
-                    notifications.map((n, idx) => (
-                      <div key={idx} className="px-2 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
-                        <p className="text-xs font-medium">{n.title}</p>
-                        {n.message && <p className="text-[11px] text-gray-500 mt-0.5">{n.message}</p>}
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* ── Profile bottom sheet (mobile) ── */}
       {profileSheet && (
