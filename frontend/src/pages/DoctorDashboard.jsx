@@ -39,7 +39,7 @@ const DoctorDashboard = () => {
     }
 
     return (
-        <div className='bg-gradient-to-b from-slate-50 to-slate-100 min-h-[calc(100vh-80px)] py-6 sm:py-8'>
+        <div className='bg-linear-to-b from-slate-50 to-slate-100 min-h-[calc(100vh-80px)] py-6 sm:py-8'>
             <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
             {showModal && (
                 <PrescriptionModal
