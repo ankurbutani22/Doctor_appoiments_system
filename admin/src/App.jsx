@@ -62,10 +62,10 @@ const App = () => {
   }
 
   return (
-    <div className='bg-[#F8F9FD]'>
+    <div className='bg-[#F8F9FD] min-h-screen'>
       <ToastContainer />
       <Navebar />
-      <div className='flex items-start '>
+      <div className='flex flex-col md:flex-row items-start'>
         <Sidebare />
         <Routes>
           <Route path='/' element={<></>} />
