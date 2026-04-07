@@ -3,9 +3,9 @@ import { assets } from '../assets/assets'
 
 const Header = () => {
   return (
-    <div className='flex flex-col md:flex-row flex-wrap bg-blue-600 rounded-lg px-4 py-10 sm:px-6 sm:py-14 md:px-10 lg:px-20 md:py-16 gap-6 md:gap-0'>
-      {/* leftside */}
-      <div className='w-full md:w-1/2 flex flex-col items-center md:items-start justify-center gap-4 m-auto md:mb-[-30px] text-center md:text-left'>
+    <div className='max-w-5xl mx-auto mt-8 md:mt-10 flex flex-col md:flex-row items-center bg-blue-600 rounded-2xl px-4 py-10 sm:px-8 sm:py-14 md:px-10 lg:px-14 md:py-16 gap-8 shadow-lg'>
+      {/* left side */}
+      <div className='w-full md:w-1/2 flex flex-col items-center md:items-start justify-center gap-5 m-auto text-center md:text-left max-w-xl'>
         <p className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight'>
           Book Appoinments <br className='hidden sm:block' />
           With Trusted Doctor
@@ -13,7 +13,7 @@ const Header = () => {
         <div className='flex flex-col sm:flex-row items-center sm:items-start gap-3 text-white text-sm font-light'>
           <img className='w-24 sm:w-28' src={assets.group_profiles} alt="Patients group" />
           <p className='max-w-md'>
-            Simply browse through our extensive list of trusted doctors,
+            Simply browse through our extensive list of trusted doctors and
             schedule your appointment hassle-free.
           </p>
         </div>
@@ -25,10 +25,11 @@ const Header = () => {
           <img className='w-3' src={assets.arrow_icon} alt='Go to specialities' />
         </a>
       </div>
-      {/* rightside */}
-      <div className='w-full md:w-1/2 relative mt-6 md:mt-0'>
+
+      {/* right side */}
+      <div className='w-full md:w-1/2 flex justify-center md:justify-end mt-6 md:mt-0'>
         <img
-          className='w-full h-auto rounded-lg md:absolute md:bottom-0 md:right-0 md:max-w-[460px] object-cover'
+          className='w-full max-w-xs sm:max-w-sm md:max-w-md rounded-xl object-cover drop-shadow-xl'
           src={assets.header_img}
           alt='Doctor illustration'
         />

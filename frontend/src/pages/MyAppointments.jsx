@@ -175,17 +175,20 @@ const MyAppointments = () => {
   }, [token])
 
   return (
-    <div>
+    <div className='max-w-5xl mx-auto px-4 sm:px-0'>
       <p className='pb-3 mt-12 font-medium text-zinc-700 border-b'>My appointments</p>
       {isLoadingAppointments && appointments.length === 0 ? (
         <PageLoader label="Loading your appointments..." variant="appointments" />
       ) : (
-      <div>
+      <div className='mt-4 space-y-4'>
         {appointments.map((item, index) => (
-          <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b' key={index}>
-            <div>
+          <div
+            className='flex flex-col md:flex-row gap-4 md:gap-6 py-3 border-b bg-white rounded-lg md:rounded-none md:bg-transparent'
+            key={index}
+          >
+            <div className='w-full md:w-auto flex justify-start md:justify-center'>
               {/* docData.image લોડ ન થાય તો પ્લેસહોલ્ડર */}
-              <img className='w-32 bg-indigo-50' src={item.docData?.image} alt="" />
+              <img className='w-28 h-28 md:w-32 md:h-32 bg-indigo-50 object-cover rounded-lg' src={item.docData?.image} alt="" />
             </div>
             <div className='flex-1 text-sm text-zinc-600'>
               <p className='text-neutral-800 font-semibold'>{item.docData?.name}</p>
@@ -198,17 +201,35 @@ const MyAppointments = () => {
                 {slotDateFormatter(item.slotDate)} | {item.slotTime}
               </p>
             </div>
-            <div className='flex flex-col gap-2 justify-end'>
-              {!item.cancelled && !item.payment && <button onClick={() => openPaymentModal(item)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-blue-600 hover:text-white transition-all'>Pay Online</button>}
-              {!item.cancelled && item.payment && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Paid</button>}
-              {!item.cancelled && <button onClick={() => cancelAppointment(item._id)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all'>Cancel Appointment</button>}
-              {item.cancelled && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
+            <div className='flex flex-wrap md:flex-col gap-2 justify-start md:justify-end mt-2 md:mt-0 w-full md:w-auto'>
+              {!item.cancelled && !item.payment && (
+                <button
+                  onClick={() => openPaymentModal(item)}
+                  className='w-full sm:w-48 text-sm text-stone-500 text-center py-2 border rounded hover:bg-blue-600 hover:text-white transition-all'
+                >
+                  Pay Online
+                </button>
+              )}
+              {!item.cancelled && item.payment && (
+                <button className='w-full sm:w-48 py-2 border border-green-500 rounded text-green-500'>Paid</button>
+              )}
+              {!item.cancelled && (
+                <button
+                  onClick={() => cancelAppointment(item._id)}
+                  className='w-full sm:w-48 text-sm text-stone-500 text-center py-2 border rounded hover:bg-red-600 hover:text-white transition-all'
+                >
+                  Cancel Appointment
+                </button>
+              )}
+              {item.cancelled && (
+                <button className='w-full sm:w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>
+              )}
 
               {item.isCompleted && item.reportUrl && !item.cancelled && (
                 <button
                   type='button'
                   onClick={() => viewReport(item._id)}
-                  className='sm:min-w-48 py-2 border border-emerald-500 rounded text-emerald-600 text-sm text-center hover:bg-emerald-50 transition-all'
+                  className='w-full sm:w-48 py-2 border border-emerald-500 rounded text-emerald-600 text-sm text-center hover:bg-emerald-50 transition-all'
                 >
                   View Report (PDF)
                 </button>
