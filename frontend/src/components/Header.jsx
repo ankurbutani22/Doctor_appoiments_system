@@ -36,7 +36,7 @@ const Header = () => {
       </div>
 
       {/* right side */}
-      <div className='w-full md:w-1/2 flex justify-center md:justify-end mt-8 md:mt-0'>
+      <div className='w-full md:w-0 flex justify-center md:justify-end mt-8 md:mt-0'>
         <img
           className='w-full max-w-[260px] sm:max-w-sm md:max-w-[520px] rounded-4xl object-cover drop-shadow-xl'
           src={assets.header_img}
