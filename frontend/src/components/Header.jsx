@@ -3,7 +3,7 @@ import { assets } from '../assets/assets'
 
 const Header = () => {
   return (
-    <div className='max-w-5xl mx-auto mt-10 flex flex-col md:flex-row items-center bg-gradient-to-r from-blue-600 to-blue-500 rounded-3xl px-4 py-8 sm:px-10 sm:py-10 md:px-12 md:py-12 gap-10 shadow-xl'>
+    <div className='max-w-5xl mx-auto mt-10 flex flex-col md:flex-row items-center bg-linear-to-r from-blue-600 to-blue-500 rounded-3xl px-4 py-8 sm:px-10 sm:py-10 md:px-12 md:py-12 gap-10 shadow-xl'>
       {/* left side */}
       <div className='w-full md:w-1/2 flex flex-col items-center md:items-start justify-center gap-4 m-auto text-center md:text-left max-w-xl'>
         <p className='text-[26px] sm:text-3xl md:text-4xl lg:text-[40px] text-white font-semibold leading-tight'>
@@ -26,7 +26,7 @@ const Header = () => {
 
         <a
           href='#speciality'
-          className='mt-5 inline-flex items-center justify-center gap-2 bg-white px-8 py-3 rounded-full text-gray-800 text-sm sm:text-base font-medium hover:bg-blue-50 hover:shadow-lg hover:-translate-y-[1px] transition-all duration-200'
+          className='mt-5 inline-flex items-center justify-center gap-2 bg-white px-8 py-3 rounded-full text-gray-800 text-sm sm:text-base font-medium hover:bg-blue-50 hover:shadow-lg hover:-translate-y-1px transition-all duration-200'
         >
           Book Appoinments
           <span className='flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white text-xs'>
