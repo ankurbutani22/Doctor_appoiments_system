@@ -3,10 +3,10 @@ import { assets } from '../assets/assets'
 
 const Header = () => {
   return (
-    <div className='max-w-5xl mx-auto mt-8 md:mt-10 flex flex-col md:flex-row items-center bg-blue-600 rounded-2xl px-4 py-10 sm:px-8 sm:py-14 md:px-10 lg:px-14 md:py-16 gap-8 shadow-lg'>
+    <div className='max-w-4xl mx-auto mt-10 flex flex-col md:flex-row items-center bg-blue-600 rounded-3xl px-4 py-8 sm:px-10 sm:py-10 md:px-12 md:py-12 gap-8 shadow-xl'>
       {/* left side */}
       <div className='w-full md:w-1/2 flex flex-col items-center md:items-start justify-center gap-5 m-auto text-center md:text-left max-w-xl'>
-        <p className='text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight'>
+        <p className='text-[26px] sm:text-3xl md:text-4xl lg:text-[42px] text-white font-semibold leading-tight'>
           Book Appoinments <br className='hidden sm:block' />
           With Trusted Doctor
         </p>
@@ -29,7 +29,7 @@ const Header = () => {
       {/* right side */}
       <div className='w-full md:w-1/2 flex justify-center md:justify-end mt-6 md:mt-0'>
         <img
-          className='w-full max-w-xs sm:max-w-sm md:max-w-md rounded-xl object-cover drop-shadow-xl'
+          className='w-full max-w-[260px] sm:max-w-sm md:max-w-[320px] rounded-2xl object-cover drop-shadow-xl'
           src={assets.header_img}
           alt='Doctor illustration'
         />
